@@ -1,13 +1,13 @@
-# Sheeesh Engine
+# NanoEngine (Forked from SheeeshEngine)
 
-Sheeesh Engine is a 3D game engine made by two students from CITM-UPC Terrassa, Xiao Costajussà Bellver & Oriol Martín Corella.
+This is a fork of the original "Sheeesh Engine" repository created by two students from CITM-UPC Terrassa, Xiao Costajussà Bellver & Oriol Martín Corella. The original repository can be found [here](https://github.com/Urii98/SheeeshEngine).
 
 - Oriol's GitHub account: [Uri](https://github.com/Urii98)
 - Xiao's GitHub account: [Xiao](https://github.com/xaitta)
-- Our GitHub project: [Sheeesh Engine](https://github.com/Urii98/SheeeshEngine)
 
 
 ## Engine Description
+Welcome to Nano Engine, a custom 3D engine designed for the 3D engine subject of the degree in Design and Development of Video Games in CITM. This ReadMe provides an overview of the engine's features and how to use them effectively.
 
 ### Features
 
