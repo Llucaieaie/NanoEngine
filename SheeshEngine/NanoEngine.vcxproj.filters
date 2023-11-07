@@ -37,12 +37,6 @@
     <Filter Include="Externals\MathGeoLib\Time">
       <UniqueIdentifier>{1d07a7ae-7541-4ebe-8134-5a5b5b6088ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\ImGui">
-      <UniqueIdentifier>{7a7fdbd9-71da-4018-a76e-aef052057793}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\ImGui\backends">
-      <UniqueIdentifier>{48ac5403-8e94-454c-9ba6-41896ab61194}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Modules\Header">
       <UniqueIdentifier>{688182e1-0412-470d-b01e-9398d429f1f1}</UniqueIdentifier>
     </Filter>
@@ -57,6 +51,12 @@
     </Filter>
     <Filter Include="Sources\GameObject\Source">
       <UniqueIdentifier>{4569a79c-c447-4a26-9eaf-f24f4a052de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\ImGui">
+      <UniqueIdentifier>{7a7fdbd9-71da-4018-a76e-aef052057793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\ImGui\backends">
+      <UniqueIdentifier>{48ac5403-8e94-454c-9ba6-41896ab61194}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,31 +262,31 @@
       <Filter>Externals</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui.h">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imgui_internal.h">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_rectpack.h">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_textedit.h">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imstb_truetype.h">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\backends\imgui_impl_opengl3.h">
-      <Filter>Sources\ImGui\backends</Filter>
+      <Filter>Externals\ImGui\backends</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\backends\imgui_impl_opengl3_loader.h">
-      <Filter>Sources\ImGui\backends</Filter>
+      <Filter>Externals\ImGui\backends</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\backends\imgui_impl_sdl2.h">
-      <Filter>Sources\ImGui\backends</Filter>
+      <Filter>Externals\ImGui\backends</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="Module.h">
       <Filter>Sources\Modules\Header</Filter>
@@ -305,9 +305,6 @@
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">
       <Filter>Sources\Modules\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="parson.h">
-      <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="ModuleAssimpMeshes.h">
       <Filter>Sources\Modules\Header</Filter>
@@ -338,6 +335,9 @@
     </ClInclude>
     <ClInclude Include="OurPrimitive.h">
       <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="parson.h">
+      <Filter>Externals</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -462,25 +462,25 @@
       <Filter>Externals</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_demo.cpp">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_draw.cpp">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_tables.cpp">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_widgets.cpp">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
-      <Filter>Sources\ImGui</Filter>
+      <Filter>Externals\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Sources\ImGui\backends</Filter>
+      <Filter>Externals\ImGui\backends</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\backends\imgui_impl_sdl2.cpp">
-      <Filter>Sources\ImGui\backends</Filter>
+      <Filter>Externals\ImGui\backends</Filter>
     </ClCompile>
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Sources\Modules\Source</Filter>
@@ -496,9 +496,6 @@
     </ClCompile>
     <ClCompile Include="ModuleRenderer3D.cpp">
       <Filter>Sources\Modules\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="parson.c">
-      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>Sources\Modules\Source</Filter>
@@ -532,6 +529,9 @@
     </ClCompile>
     <ClCompile Include="OurPrimitive.cpp">
       <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="parson.c">
+      <Filter>Externals</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

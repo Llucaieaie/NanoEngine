@@ -340,7 +340,7 @@ void ModuleAssimpMeshes::RenderScene()
     for (int i = 0; i < meshes.size(); i++) {
         glColor3f(1.0f, 1.0f, 1.0f);
         meshes[i]->Render();
-        glColor3f(0.0f, 0.6f, 0.7f);
+        glColor3f(0.56f, 0.10f, 0.10f);
         if (meshes[i]->owner->GetMeshComponent()->faceNormals) { 
             meshes[i]->RenderFaceNormals(); 
         }
