@@ -4,8 +4,6 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 
-#include "glmath.h"
-
 class ModuleCamera3D : public Module
 {
 public:
@@ -36,6 +34,6 @@ public:
 
 private:
 
-	mat4x4 ViewMatrix;
+	float4x4 ViewMatrix;
 	
 };
