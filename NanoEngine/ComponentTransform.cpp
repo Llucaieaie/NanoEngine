@@ -2,9 +2,9 @@
 #include "Globals.h"
 #include "GameObject.h"
 
-ComponentTransform::ComponentTransform(bool enabled) : Component(mOwner) {
+ComponentTransform::ComponentTransform(GameObject* owner) : Component(owner) {
 	type = ComponentType::TRANSFORM;
-	
+	mOwner = owner;
 	resetMatrix();
 }
 
@@ -78,7 +78,6 @@ void ComponentTransform::setScale(float3 sca)
 
 void ComponentTransform::calculateMatrix()
 {
-
 	float rx = rotation.x * DEGTORAD;
 	float ry = rotation.y * DEGTORAD;
 	float rz = rotation.z * DEGTORAD;
@@ -86,8 +85,6 @@ void ComponentTransform::calculateMatrix()
 	Quat q;
 	q = Quat::FromEulerXYZ(rx, ry, rz);
 	matrix = float4x4::FromTRS(position, q, scale).Transposed();
-
-
 }
 
 void ComponentTransform:: PrintInspector() {
@@ -95,13 +92,13 @@ void ComponentTransform:: PrintInspector() {
 	if (ImGui::CollapsingHeader("Transform"))
 	{
 		ImGui::Text("X\t\t Y\t\t Z");
-		ImGui::InputFloat3("Position", position.ptr());
+		ImGui::DragFloat3("Position", position.ptr());
 
 		ImGui::Text("X\t\t Y\t\t Z");
-		ImGui::InputFloat3("Rotation", rotation.ptr());
+		ImGui::DragFloat3("Rotation", rotation.ptr());
 
 		ImGui::Text("X\t\t Y\t\t Z");
-		ImGui::InputFloat3("Scale", scale.ptr());
+		ImGui::DragFloat3("Scale", scale.ptr());
 	}
 
 

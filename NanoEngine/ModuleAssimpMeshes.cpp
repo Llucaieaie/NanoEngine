@@ -4,6 +4,7 @@
 #include"GameObject.h"
 #include"ComponentMesh.h"
 #include"ComponentMaterial.h"
+#include"ComponentTransform.h"
 
 ModuleAssimpMeshes::ModuleAssimpMeshes(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -168,6 +169,18 @@ void ModuleAssimpMeshes::ImportAssimpMesh(aiMesh* aiMesh, GameObject* PgameObjec
     }
 }
 
+mat4x4 Float4x4ToMat4(const float4x4& floatMatrix) {
+
+    mat4x4 mat;
+
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            mat[i * 4 + j] = floatMatrix.At(i, j);
+        }
+    }
+    return mat;
+}
+
 void Mesh::Render()
 {
     glEnable(GL_TEXTURE_COORD_ARRAY);
@@ -179,7 +192,18 @@ void Mesh::Render()
 
     glVertexPointer(3, GL_FLOAT, sizeof(float) * VERTEX, NULL);
     glTexCoordPointer(2, GL_FLOAT, sizeof(float) * VERTEX, (void*)(sizeof(float) * 3));
+
+    glPushMatrix(); // Bind transform matrix
+
+    if (owner != nullptr) {
+
+        glMultMatrixf((&Float4x4ToMat4(owner->GetTransformComponent()->getGlobalMatrix())));
+    }
+
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
+
+    glPopMatrix();
+
     glDisableClientState(GL_VERTEX_ARRAY);
 
     glBindTexture(GL_TEXTURE_2D, 0);

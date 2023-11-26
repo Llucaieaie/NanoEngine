@@ -29,7 +29,7 @@ public:
 
 
 	ComponentMesh* GetMeshComponent();
-
+	ComponentTransform* GetTransformComponent();
 	ComponentMaterial* GetComponentTexture();
 
 	bool isTimetoDelete;
