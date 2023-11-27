@@ -339,6 +339,9 @@
     <ClInclude Include="parson.h">
       <Filter>Externals</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Sources\GameObject\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp">
@@ -532,6 +535,9 @@
     </ClCompile>
     <ClCompile Include="parson.c">
       <Filter>Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>Sources\GameObject\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

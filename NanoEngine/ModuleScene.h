@@ -11,6 +11,7 @@ public:
 
 	bool Init();
 	bool Start();
+	void SceneCamera();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -25,6 +26,7 @@ public:
 	GameObject* prova5;
 	GameObject* prova6;
 
+	GameObject* sceneCam;
 private:
 	
 };

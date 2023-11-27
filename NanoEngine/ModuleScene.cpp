@@ -1,7 +1,9 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "Application.h"
-
+#include "OurPrimitive.h"
+#include "ModuleAssimpMeshes.h"
+#include "ComponentCamera.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled) 
 {
@@ -21,15 +23,14 @@ bool ModuleScene::Start() {
     root = new GameObject(nullptr);
     root->name = ("Scene");
 
-
+    SceneCamera();
 
     //Load Baker House
     App->assimpMeshes->LoadMeshFromFile("Assets/Models/BakerHouse.fbx");
-   
+    //App->assimpMeshes->
 
     return true;
 }
-
 
 update_status ModuleScene::PreUpdate(float dt) {
     
@@ -63,3 +64,10 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent)
 
 }
 
+void ModuleScene::SceneCamera()
+{
+    sceneCam = PrimitivesGeomtriesLibrary::InstanciatePrimitiveGeometry(GeometryType::EMPTY);
+    ComponentCamera* cam = new ComponentCamera();
+    sceneCam->GameObject::AddComponent(cam);
+    sceneCam->name = "Scene Cam";
+}

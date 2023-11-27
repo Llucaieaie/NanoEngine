@@ -423,9 +423,7 @@ void Mesh::GenerateAABB()
 }
 
 void Mesh::RenderAABB()
-{
-    LOG("Render AABB");
-    
+{    
     float3 obbCorners[8];
     OBB.GetCornerPoints(obbCorners);
 
@@ -441,7 +439,6 @@ void Mesh::RenderAABB()
 
 void Mesh::DrawBB(float3* corners, float3 color)
 {
-    LOG("Draw BB");
     int indices[24] = { 0,2,2,6,6,4,4,0,0,1,1,3,3,2,4,5,6,7,5,7,3,7,1,5 };
     glBegin(GL_LINES);
     glColor3fv(color.ptr());
