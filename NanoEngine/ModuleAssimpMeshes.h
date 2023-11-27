@@ -2,12 +2,15 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "GameObject.h"
 #include <vector>
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include"Glew/include/glew.h"
-#include "GameObject.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
+#include "MathGeoLib/include/Geometry/OBB.h"
+
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 #include <string>
@@ -35,6 +38,12 @@ struct Mesh {
     uint VBO;
     uint EBO;
 
+    bool showBB = true;
+
+    AABB Local_AABB;
+    AABB Global_AABB;
+    OBB OBB;
+
     GLuint id_texture;
     GLuint texture_width = 0;
     GLuint texture_height = 0;
@@ -44,6 +53,10 @@ struct Mesh {
     void RenderFaceNormals();
 
     void RenderVertexNormals();
+
+    void GenerateAABB();
+    void RenderAABB();
+    void DrawBB(float3* corners, float3 color);
 };
 
 class ModuleAssimpMeshes : public Module
@@ -67,6 +80,8 @@ public:
 public:
     std::vector<Mesh*> meshes;
     const char* file_path;
+
     bool MeshDebug;
+    bool showBB;
 };
 

@@ -29,7 +29,6 @@ bool ModuleAssimpMeshes::Start()
     aiAttachLogStream(&stream);
 
     MeshDebug = true;
-    
                 
     return ret;
 }
@@ -125,6 +124,7 @@ void ModuleAssimpMeshes::ImportAssimpMesh(aiMesh* aiMesh, GameObject* PgameObjec
         ComponentMesh* meshComp = new ComponentMesh(CgameObject);
         ourMesh->owner = CgameObject;
         meshComp->mesh = ourMesh;
+        ourMesh->GenerateAABB();
         CgameObject->AddComponent(meshComp);
 
         ourMesh->id_texture = App->textures->checkersID;
@@ -363,7 +363,15 @@ void ModuleAssimpMeshes::RenderScene()
   
     for (int i = 0; i < meshes.size(); i++) {
         glColor3f(1.0f, 1.0f, 1.0f);
+
+        meshes[i]->OBB = meshes[i]->Local_AABB;
+        meshes[i]->OBB.Transform(meshes[i]->owner->transform->getGlobalMatrix().Transposed());
+        meshes[i]->Global_AABB.SetNegativeInfinity();
+        meshes[i]->Global_AABB.Enclose(meshes[i]->OBB);
+
         meshes[i]->Render();
+        meshes[i]->RenderAABB();
+
         glColor3f(0.56f, 0.10f, 0.10f);
         if (meshes[i]->owner->GetMeshComponent()->faceNormals) { 
             meshes[i]->RenderFaceNormals(); 
@@ -397,4 +405,50 @@ bool ModuleAssimpMeshes::CleanUp()
    
     aiDetachAllLogStreams();
     return true;
+}
+
+void Mesh::GenerateAABB()
+{
+    if (vertexCount == 0) { LOG("Couldn't generate AABB: Mesh doesn't contain any vertex"); return; }
+
+    std::vector<float3> newVertex;
+    newVertex.reserve(vertexCount);
+
+    for (uint i = 0; i < vertexCount * VERTEX; i += VERTEX)
+    {
+        newVertex.emplace_back(vertex[i], vertex[i + 1], vertex[i + 2]);
+    }
+
+    Local_AABB.SetFrom(&newVertex[0], newVertex.size());
+}
+
+void Mesh::RenderAABB()
+{
+    LOG("Render AABB");
+    
+    float3 obbCorners[8];
+    OBB.GetCornerPoints(obbCorners);
+
+    float3 globalAABBCorners[8];
+    Global_AABB.GetCornerPoints(globalAABBCorners);
+
+    if(showBB)
+    {
+        DrawBB(obbCorners, float3(0.6f, 0.0f, 1.0f));
+        DrawBB(globalAABBCorners, float3(0.0f, 0.0f, 1.0f));
+    }
+}
+
+void Mesh::DrawBB(float3* corners, float3 color)
+{
+    LOG("Draw BB");
+    int indices[24] = { 0,2,2,6,6,4,4,0,0,1,1,3,3,2,4,5,6,7,5,7,3,7,1,5 };
+    glBegin(GL_LINES);
+    glColor3fv(color.ptr());
+
+    for (size_t i = 0; i < 24; i++)
+    {
+        glVertex3fv(corners[indices[i]].ptr());
+    }
+    glEnd();
 }

@@ -27,5 +27,6 @@ void ComponentMesh::PrintInspector()
 		ImGui::SameLine();
 		ImGui::Text("%d", mesh->vertexCount);
 		ImGui::Checkbox("Face Normals", &faceNormals);
+		ImGui::Checkbox("Bounding Box", &mesh->showBB);
 	}
 }
