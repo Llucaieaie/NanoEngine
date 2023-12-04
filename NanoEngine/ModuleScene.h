@@ -26,7 +26,6 @@ public:
 	GameObject* prova5;
 	GameObject* prova6;
 
-	GameObject* sceneCam;
 private:
 	
 };

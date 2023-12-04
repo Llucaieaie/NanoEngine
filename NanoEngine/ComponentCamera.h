@@ -1,40 +1,27 @@
 #pragma once
-#include "Globals.h"
 #include "Component.h"
-#include "ImGui/imgui.h"
 #include "MathGeoLib/include/MathGeoLib.h"
-
-class GameObject;
-class Component;
 
 class ComponentCamera : public Component
 {
 public:
-
 	ComponentCamera();
-	ComponentCamera(GameObject* owner);
+	ComponentCamera(GameObject owner);
 	~ComponentCamera();
 
-	void SetCam();
-	void GenBuffer();
-
-	float* GetViewMatrix();
-	float* GetProjectionMatrix();
-
-	void LookAt(const float3& target);
-
-	void TransformCam();
-
 	void PrintInspector();
+	void Update();
 
-	Frustum FrustumCam;
-	float4x4 viewMatrix;
-	float4x4 projectionMatrix;
+	void Look(const float3& Position, const float3& Reference);
+	void LookAt(const float3& Spot);
+	void Move(const float3& Movement);
+	float* GetViewMatrix();
+	float* GetProjetionMatrix();
 
-	unsigned int cameraBuffer;
-	unsigned int frameBuffer;
+	Frustum frustum;
+	float3 reference;
 
 private:
-
-	unsigned int renderObjBuffer;
+	float4x4 viewMatrix;
+	float4x4 projectionMatrix;
 };

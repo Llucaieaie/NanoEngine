@@ -3,10 +3,10 @@
 #include "Globals.h"
 #include "Light.h"
 
-#include "MathGeoLib/include/Math/float3x3.h"
-#include "MathGeoLib/include/Math/float4x4.h"
 #include "Primitive.h"
+#include "MathGeoLib/include/MathGeoLib.h"
 #include "Glew/include/glew.h"
+#include "ImGui/imgui.h"
 
 
 //todo: REMOVE this before 1st delivery!!
@@ -68,8 +68,15 @@ public:
 	SDL_GLContext context;
 	CPlane Grid;
 	
-	//You won't need this after using Frustum
-	mat4x4 ProjectionMatrix;
+	float3x3 NormalMatrix;
+	float4x4 ModelMatrix;
+	float4x4 ViewMatrix;
+	float4x4 ProjectionMatrix;
+
+	unsigned int cameraBuffer;
+	unsigned int inGameBuffer;
+	unsigned int frameBuffer;
+	unsigned int renderObjBuffer;
 
 	GLuint test;
 	GLuint VBO;

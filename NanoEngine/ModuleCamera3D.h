@@ -4,6 +4,15 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
 
+class ComponentCamera;
+
+enum class CamStates {
+
+	NORMAL,
+	FLYING,
+	FOCUSED,
+};
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -19,18 +28,20 @@ public:
 	void Move(const float3& Movement);
 	float* GetViewMatrix();
 	void FocusCameraToSelectedObject();
-	void RotationAroundCamera(float dt);
 	void OrbitSelectedObject(float dt);
+	void RotationAroundCamera(float dx, float dy, float sensitivity);
 	float3 RotateVector(const float3& u, float angle, const float3& v);
-
+	float3 SelectedObjectPos();
 private:
 
 	void CalculateViewMatrix();
 
 public:
-
 	
 	float3 X, Y, Z, Position, Reference;
+
+	ComponentCamera* camera;
+	CamStates camState;
 
 private:
 

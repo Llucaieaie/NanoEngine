@@ -1,6 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+#include "ComponentCamera.h"
+
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -20,6 +23,7 @@
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	ProjectionMatrix.SetIdentity();
 }
 
 // Destructor
@@ -198,13 +202,8 @@ bool ModuleRenderer3D::Init()
 		glewInit();
 	}
 
-	
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
 	Grid.axis = true;
 
-	
-	
 	glGenBuffers(1, &test);
 	glBindBuffer(GL_ARRAY_BUFFER, test);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
@@ -265,8 +264,7 @@ bool ModuleRenderer3D::Init()
 
 bool ModuleRenderer3D::Start()
 {
-	
-	
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 			
 	return true;
 }
@@ -279,15 +277,12 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(App->camera->camera->GetViewMatrix());
 
-	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-
+	lights[0].SetPos(App->camera->camera->frustum.pos.x, App->camera->camera->frustum.pos.y, App->camera->camera->frustum.pos.z);
+	
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-
-
 
 	return UPDATE_CONTINUE;
 }
@@ -382,6 +377,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//glLineWidth(1.0f);
 	
 	
+	glBindFramebuffer(GL_FRAMEBUFFER, 0); //****************
 
 	if (App->editor->DrawEditor() == UPDATE_STOP)
 	{
@@ -449,9 +445,12 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	//todo: USE MATHGEOLIB here BEFORE 1st delivery! (TIP: Use MathGeoLib/Geometry/Frustum.h, view and projection matrices are managed internally.)
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(ProjectionMatrix.M);
+	////todo: USE MATHGEOLIB here BEFORE 1st delivery! (TIP: Use MathGeoLib/Geometry/Frustum.h, view and projection matrices are managed internally.)
+	//ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	//glLoadMatrixf(ProjectionMatrix.M);
+	////glLoadMatrixf(App->camera->sceneCam->FrustumCam.ProjectionMatrix().Transposed().ptr());
+
+	glLoadMatrixf(App->camera->camera->GetProjetionMatrix());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

@@ -23,7 +23,7 @@ bool ModuleScene::Start() {
     root = new GameObject(nullptr);
     root->name = ("Scene");
 
-    SceneCamera();
+    //SceneCamera();
 
     //Load Baker House
     App->assimpMeshes->LoadMeshFromFile("Assets/Models/BakerHouse.fbx");
@@ -58,16 +58,13 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent)
 {
     GameObject* newGameObject = new GameObject(parent);
 
-
-
     return newGameObject;
-
 }
 
-void ModuleScene::SceneCamera()
-{
-    sceneCam = PrimitivesGeomtriesLibrary::InstanciatePrimitiveGeometry(GeometryType::EMPTY);
-    ComponentCamera* cam = new ComponentCamera();
-    sceneCam->GameObject::AddComponent(cam);
-    sceneCam->name = "Scene Cam";
-}
+//void ModuleScene::SceneCamera()
+//{
+//    sceneCam = PrimitivesGeomtriesLibrary::InstanciatePrimitiveGeometry(GeometryType::EMPTY);
+//    ComponentCamera* cam = new ComponentCamera();
+//    sceneCam->GameObject::AddComponent(cam);
+//    sceneCam->name = "Scene Cam";
+//}

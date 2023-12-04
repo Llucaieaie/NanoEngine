@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "ComponentCamera.h"
 #include "OurPrimitive.h"
 
 
@@ -122,6 +123,20 @@ ComponentMaterial* GameObject::GetComponentTexture()
 
 	return nullptr;
 }
+
+ComponentCamera* GameObject::GetComponentCamera()
+{
+	for (size_t i = 0; i < mComponents.size(); i++)
+	{
+		if (mComponents[i]->type == ComponentType::CAMERA) {
+
+			return (ComponentCamera*)mComponents[i];
+		}
+	}
+
+	return nullptr;
+}
+
 
 
 bool GameObject::CheckChildOf(GameObject* parent)
