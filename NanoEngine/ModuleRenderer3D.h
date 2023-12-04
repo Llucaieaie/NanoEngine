@@ -8,10 +8,6 @@
 #include "Glew/include/glew.h"
 #include "ImGui/imgui.h"
 
-
-//todo: REMOVE this before 1st delivery!!
-#include "glmath.h"
-
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module

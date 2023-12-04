@@ -169,18 +169,6 @@ void ModuleAssimpMeshes::ImportAssimpMesh(aiMesh* aiMesh, GameObject* PgameObjec
     }
 }
 
-mat4x4 Float4x4ToMat4(const float4x4& floatMatrix) {
-
-    mat4x4 mat;
-
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            mat[i * 4 + j] = floatMatrix.At(i, j);
-        }
-    }
-    return mat;
-}
-
 void Mesh::Render()
 {
     glEnable(GL_TEXTURE_COORD_ARRAY);
@@ -196,8 +184,7 @@ void Mesh::Render()
     glPushMatrix(); // Bind transform matrix
 
     if (owner != nullptr) {
-
-        glMultMatrixf((&Float4x4ToMat4(owner->GetTransformComponent()->getGlobalMatrix())));
+        glMultMatrixf(owner->GetTransformComponent()->getGlobalMatrix().ptr());
     }
 
     glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, NULL);
