@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include <vector>
 #include "Glew/include/glew.h"
+#include "ImGui/imgui.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -26,6 +27,7 @@ public:
     void HardwareCollapsingHeader();
 
     bool CleanUp();
+
     void AddFPS(const float aFPS);
     void AddMs(const float aFPS);
     float AverageValueFloatVector(const std::vector<float>& fps);
@@ -36,12 +38,17 @@ public:
 
     void PushBackLog(std::vector<float>* log, float current);
     
+    ImVec2 gameWindowSize;
+    ImVec2 sceneWindowSize;
+
 private:
 
     
     void CreateAboutWindow(bool& showAboutWindow);
     void URLButton(const char* url);
     void CreateConsoleWindow(bool& showConsoleWindow);
+    void GameWindow(bool& isActiveGameWindow);
+    void SceneWindow(bool& isActiveSceneWindow);
     void ModuleEditor::WindowCollapsingHeader();
     void ModuleEditor::RenderCollapsingHeader();
     void UpdatePlots();
@@ -105,9 +112,10 @@ private:
     bool isActiveInspector;
     bool isActiveConsole;
     bool isActiveHierarchy;
+    bool isActiveGameWindow;
+    bool isActiveSceneWindow;
 
     //About Window
     std::string license;
-
 };
 

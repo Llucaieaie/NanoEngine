@@ -3,6 +3,8 @@
 #include "Globals.h"
 
 class GameObject;
+class ComponentCamera;
+
 class ModuleScene : public Module
 {
 public:
@@ -26,6 +28,7 @@ public:
 	GameObject* prova5;
 	GameObject* prova6;
 
+	GameObject* cameraObj;
+	ComponentCamera* cam;
 private:
-	
 };

@@ -28,13 +28,11 @@ public:
 	float3 getScale();
 	void setScale(float3 sca);
 
+	void calculateMatrix();
+
 	void PrintInspector();
 
-
-	
-
 private:
-	void calculateMatrix();
 
 	float4x4 matrix;
 	float3 position;

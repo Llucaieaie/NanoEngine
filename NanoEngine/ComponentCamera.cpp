@@ -9,12 +9,14 @@ ComponentCamera::ComponentCamera() :Component(nullptr)
 	type = ComponentType::CAMERA;
 	mOwner = nullptr;
 
+	fov = 60.0f;
+
 	frustum.type = PerspectiveFrustum;
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 500.f;
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
-	frustum.verticalFov = 60.0f * DEGTORAD;
+	frustum.verticalFov = fov * DEGTORAD;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
 	frustum.pos = float3(0, 0, 0);
 }
@@ -25,7 +27,20 @@ ComponentCamera::~ComponentCamera()
 
 void ComponentCamera::PrintInspector()
 {
-
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		if (ImGui::SliderFloat("FOV", &fov, 10, 180)) {
+			frustum.verticalFov = fov * DEGTORAD;
+			frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
+		}
+		ImGui::SliderFloat("Render Distance", &frustum.farPlaneDistance, 100, 2000);
+		if (ImGui::Button("Set default")) {
+			fov = 60.0f;
+			frustum.verticalFov = fov * DEGTORAD;
+			frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
+			frustum.farPlaneDistance = 500.f;
+		}
+	}
 }
 
 void ComponentCamera::Update()

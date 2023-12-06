@@ -3,7 +3,6 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include <GL/gl.h>
-#include "ImGui/imgui.h"
 #include "ImGui/backends/imgui_impl_opengl3.h"
 #include "ImGui/backends/imgui_impl_sdl2.h"
 
@@ -45,6 +44,9 @@ bool ModuleEditor::Init()
 
     mFPSLog.reserve(30);
     mMsLog.reserve(30);
+
+    gameWindowSize = { 200,200 };
+    sceneWindowSize = { 200,200 };
 
     //Editor attributes Initialization
     showConsoleWindow = false;
@@ -115,10 +117,11 @@ bool ModuleEditor::Init()
     isActiveHierarchy = true;
     isActiveConsole = true;
     isActiveInspector = true;
+    isActiveSceneWindow = true;
+    isActiveGameWindow = true;
 
     return true;
 }
-
 
 bool ModuleEditor::CleanUp()
 {
@@ -131,7 +134,6 @@ bool ModuleEditor::CleanUp()
 
     return true;
 }
-
 
 update_status ModuleEditor::DrawEditor()
 {
@@ -173,8 +175,8 @@ update_status ModuleEditor::DrawEditor()
             if (ImGui::MenuItem("Quit Application", "ESC")) {
                 ret = UPDATE_STOP;
             }
+           
             ImGui::EndMenu();
-            
         }
         if (ImGui::BeginMenu("Game Objects"))
         {
@@ -272,13 +274,12 @@ update_status ModuleEditor::DrawEditor()
 
             HardwareCollapsingHeader();
 
-            
-
             if (ImGui::Button("Close", ImVec2(60, 0)))
             {
                 ImGui::CloseCurrentPopup();
             }
-            ImGui::End();
+
+            ImGui::EndMenu();
         }
 
         if (ImGui::BeginMenu("Help"))
@@ -295,6 +296,8 @@ update_status ModuleEditor::DrawEditor()
         //CreateAboutModalPopup(showModalAbout);
         CreateAboutWindow(showAboutWindow);
         CreateConsoleWindow(isActiveConsole);
+        GameWindow(isActiveGameWindow);
+        SceneWindow(isActiveSceneWindow);
 
         ViewCollapsingHeader();
 
@@ -328,8 +331,6 @@ update_status ModuleEditor::DrawEditor()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     return ret;
-
-    
 }
 
 void ModuleEditor::ViewCollapsingHeader() {
@@ -347,6 +348,14 @@ void ModuleEditor::ViewCollapsingHeader() {
         if (ImGui::Checkbox("Console", &isActiveConsole))
         {
             isActiveConsole != isActiveConsole;
+        }
+        if (ImGui::Checkbox("Scene Window", &isActiveSceneWindow))
+        {
+            isActiveSceneWindow != isActiveSceneWindow;
+        }
+        if (ImGui::Checkbox("Game Window", &isActiveGameWindow))
+        {
+            isActiveGameWindow != isActiveGameWindow;
         }
 
         ImGui::EndMenu();
@@ -552,13 +561,17 @@ void ModuleEditor::CreateAboutWindow(bool& showAboutWindow)
     }
 
     // Basic Info
-    ImGui::Text("Sheesh Engine");
+    ImGui::Text("Nano Engine");
     ImGui::Separator();
     ImGui::Spacing();
-    ImGui::Text("Venture into the realm of game development with the legendary Sheesh Engine, \na creation born from the collaborative efforts of two visionary minds at CITM.");
-    ImGui::Text("Whether you seek to forge epic tales of heroism or weave enchanting mysteries,\nthis engine is your magical wand.");
+    ImGui::Text("Venture into the realm of game development with Nano Engine, forked from the \nlegendary Sheesh Engine, a creation born from the collaborative efforts of two \nvisionary minds at CITM.");
+    ImGui::Text("Whether you seek to forge epic tales of heroism or weave \nenchanting mysteries, this engine is your magical wand.");
     ImGui::Spacing();
-    if (ImGui::Button("Autors: Oriol Martin Corella & Xiao Shan Costajussa Bellver"))
+    if (ImGui::Button("Autors: Lluc Estruch Andreu & Rafael Esquius Perez"))
+    {
+        URLButton("https://github.com/Llucaieaie/NanoEngine");
+    }
+    if (ImGui::Button("Forked Engine Autors: Oriol Martin Corella & Xiao Shan Costajussa Bellver"))
     {
         URLButton("https://github.com/Urii98/SheeeshEngine");
     }
@@ -671,6 +684,40 @@ void ModuleEditor::CreateConsoleWindow(bool& showConsoleWindow)
     ImGui::End();
 }
 
+void ModuleEditor::GameWindow(bool& isActiveGameWindow)
+{
+    ImGui::Begin("Game", 0, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus);
+    gameWindowSize = ImGui::GetContentRegionAvail();
+
+    ImVec2 newWinSize = gameWindowSize;
+    newWinSize.x = (newWinSize.y / 9.0f) * 16.0f;
+
+    float uvOffset = (gameWindowSize.x - newWinSize.x) / 2.0f;
+    uvOffset /= newWinSize.x;
+
+    ImGui::End();
+}
+
+void ModuleEditor::SceneWindow(bool& isActiveSceneWindow) 
+{
+    ImGui::Begin("Scene");
+    sceneWindowSize = ImGui::GetContentRegionAvail();
+
+    //Get proportion, and match with 16:9
+    ImVec2 newWinSize = sceneWindowSize;
+    newWinSize.x = (newWinSize.y / 9.0f) * 16.0f;
+
+    //Get uv's offset proportionate to image
+    float uvOffset = (sceneWindowSize.x - newWinSize.x) / 2.0f;
+    uvOffset /= newWinSize.x;
+
+    //Print image (window size), modify UV's to match 
+    ImGui::Image((ImTextureID)App->renderer3D->cameraBuffer, sceneWindowSize, ImVec2(-uvOffset, 1), ImVec2(1 + uvOffset, 0));
+    ImGui::End();
+
+    //ImGui::Render();
+    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
 
 void ModuleEditor::URLButton(const char* url)
 {
@@ -693,16 +740,13 @@ void ModuleEditor::UpdatePlots()
 {
     AddMs(1000.0 * App->GetDt());
     AddFPS(App->GetFrameRate());
-    
 }
 
 
 void ModuleEditor::AddFPS(const float aFPS)
 {
-
     if (mFPSLog.size() == mFPSLog.capacity())
     {
-
         for (unsigned int i = 0; i < mFPSLog.size(); i++)
         {
             if (i + 1 < mFPSLog.size())
@@ -712,7 +756,6 @@ void ModuleEditor::AddFPS(const float aFPS)
             }
         }
         mFPSLog[mFPSLog.capacity() - 1] = aFPS;
-        
     }
     else
     {
