@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleAssimpMeshes.h"
 
 ComponentCamera::ComponentCamera() :Component(nullptr)
 {
@@ -160,4 +161,27 @@ void ComponentCamera::DrawFrustumEdges(float3* corners, float3 color) {
 		glVertex3fv(corners[indices[i]].ptr());
 	}
 	glEnd();
+}
+
+bool ComponentCamera::ObjectInsideFrustrum(Mesh* mesh)
+{
+	float3 boxPoints[8];
+	Plane frustumPlanes[6];
+
+	mesh->Global_AABB.GetCornerPoints(boxPoints);
+	frustum.GetPlanes(frustumPlanes);
+
+	for (size_t i = 0; i < 6; i++)
+	{
+		int p = 0;
+		for (size_t j = 0; j < 8; j++)
+		{
+			if (frustumPlanes[i].IsOnPositiveSide(boxPoints[j]))
+				p++;
+		}
+		if (p == 8) {
+			return false;
+		}
+	}
+	return true;
 }

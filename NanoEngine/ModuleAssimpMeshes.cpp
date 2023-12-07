@@ -353,17 +353,20 @@ void ModuleAssimpMeshes::RenderScene()
     for (int i = 0; i < meshes.size(); i++) {
         glColor3f(1.0f, 1.0f, 1.0f);
 
-        meshes[i]->OBB = meshes[i]->Local_AABB;
-        meshes[i]->OBB.Transform(meshes[i]->owner->transform->getGlobalMatrix().Transposed());
-        meshes[i]->Global_AABB.SetNegativeInfinity();
-        meshes[i]->Global_AABB.Enclose(meshes[i]->OBB);
+        if (App->renderer3D->activeCam->ObjectInsideFrustrum(meshes[i]))
+        {
+            meshes[i]->OBB = meshes[i]->Local_AABB;
+            meshes[i]->OBB.Transform(meshes[i]->owner->transform->getGlobalMatrix().Transposed());
+            meshes[i]->Global_AABB.SetNegativeInfinity();
+            meshes[i]->Global_AABB.Enclose(meshes[i]->OBB);
 
-        meshes[i]->Render();
-        meshes[i]->RenderAABB();
+            meshes[i]->Render();
+            meshes[i]->RenderAABB();
 
-        glColor3f(0.56f, 0.10f, 0.10f);
-        if (meshes[i]->owner->GetMeshComponent()->faceNormals) { 
-            meshes[i]->RenderFaceNormals(); 
+            glColor3f(0.56f, 0.10f, 0.10f);
+            if (meshes[i]->owner->GetMeshComponent()->faceNormals) {
+                meshes[i]->RenderFaceNormals();
+            }
         }
        /* glColor3f(1, 0, 0);
         meshes[i]->RenderVertexNormals();*/
@@ -386,7 +389,8 @@ void ModuleAssimpMeshes::RenderGame()
     //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     for (int i = 0; i < meshes.size(); i++) {
-        meshes[i]->Render();
+        if (App->renderer3D->activeCam->ObjectInsideFrustrum(meshes[i]))
+            meshes[i]->Render();
     }
 }
 

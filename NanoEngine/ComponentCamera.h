@@ -2,6 +2,8 @@
 #include "Component.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 
+struct Mesh;
+
 class ComponentCamera : public Component
 {
 public:
@@ -24,6 +26,7 @@ public:
 
 	void RenderCameraFrustum();
 	void DrawFrustumEdges(float3* corners, float3 color);
+	bool ObjectInsideFrustrum(Mesh* mesh);
 
 	Frustum frustum;
 	float3 reference;
