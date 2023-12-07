@@ -10,11 +10,11 @@ ComponentCamera::ComponentCamera() :Component(nullptr)
 	type = ComponentType::CAMERA;
 	mOwner = nullptr;
 
-	fov = 100.0f;
+	fov = 60.0f;
 
 	frustum.type = PerspectiveFrustum;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 500.f;
+	frustum.farPlaneDistance = 100.f;
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.verticalFov = fov * DEGTORAD;
@@ -42,12 +42,14 @@ void ComponentCamera::PrintInspector()
 			frustum.verticalFov = fov * DEGTORAD;
 			frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
 		}
-		ImGui::SliderFloat("Render Distance", &frustum.farPlaneDistance, 100, 2000);
+		ImGui::SliderFloat("Far Distance", &frustum.farPlaneDistance, 10, 1000);
+		ImGui::SliderFloat("Near Distance", &frustum.nearPlaneDistance, 0.1f, 10);
 		if (ImGui::Button("Set default")) {
 			fov = 60.0f;
 			frustum.verticalFov = fov * DEGTORAD;
 			frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
-			frustum.farPlaneDistance = 500.f;
+			frustum.farPlaneDistance = 100.f;
+			frustum.nearPlaneDistance = 0.1f;
 		}
 	}
 }
@@ -60,6 +62,8 @@ void ComponentCamera::Update()
 	float4x4 m = mOwner->transform->getGlobalMatrix();
 	frustum.up = m.RotatePart().Col(1).Normalized();
 	frustum.front = m.RotatePart().Col(2).Normalized();
+
+	RenderCameraFrustum();
 }
 
 void ComponentCamera::Look(const float3& Position, const float3& Reference)
@@ -134,4 +138,26 @@ float* ComponentCamera::GetProjetionMatrix()
 	projectionMatrix = frustum.ProjectionMatrix();
 	projectionMatrix.Transpose();
 	return projectionMatrix.ptr();
+}
+
+void ComponentCamera::RenderCameraFrustum() {
+	float3 corners[8];
+	frustum.GetCornerPoints(corners);
+
+	// Assuming you have a function similar to DrawBB to render lines
+	DrawFrustumEdges(corners, float3(1.0f, 1.0f, 1.0f));
+}
+
+void ComponentCamera::DrawFrustumEdges(float3* corners, float3 color) {
+	// Define indices to draw lines between corners
+	int indices[24] = { 0,1, 1,3, 3,2, 2,0, 4,5, 5,7, 7,6, 6,4, 0,4, 1,5, 2,6, 3,7 };
+
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3fv(color.ptr());
+
+	for (size_t i = 0; i < 24; i++) {
+		glVertex3fv(corners[indices[i]].ptr());
+	}
+	glEnd();
 }

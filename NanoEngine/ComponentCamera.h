@@ -22,6 +22,9 @@ public:
 	float* GetViewMatrix();
 	float* GetProjetionMatrix();
 
+	void RenderCameraFrustum();
+	void DrawFrustumEdges(float3* corners, float3 color);
+
 	Frustum frustum;
 	float3 reference;
 
