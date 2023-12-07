@@ -67,6 +67,6 @@ void ModuleScene::SceneCamera()
     cam = new ComponentCamera();
     cameraObj->AddComponent(cam);
     cameraObj->name = "Main Camera";
-    cameraObj->transform->setPosition(float3(0, 5, -5));
+    cameraObj->transform->setPosition(float3(0, 2, -5));
     //cameraObj->transform->calculateMatrix();
 }

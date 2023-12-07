@@ -19,7 +19,7 @@ ComponentCamera::ComponentCamera() :Component(nullptr)
 	frustum.up = float3::unitY;
 	frustum.verticalFov = fov * DEGTORAD;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
-	frustum.pos = float3(0, 5, -5);
+	frustum.pos = float3(0, 0, 0);
 
 	isActive = true;
 	SetActiveCam(this);

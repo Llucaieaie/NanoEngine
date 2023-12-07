@@ -289,6 +289,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	activeCam->Update();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -405,6 +407,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 		App->assimpMeshes->RenderGame();
 	}
+	Grid.Render();
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
