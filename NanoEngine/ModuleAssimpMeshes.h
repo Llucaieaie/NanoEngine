@@ -73,6 +73,7 @@ public:
     void ImportAssimpMesh(aiMesh* aiMesh, GameObject* PgameObject, GameObject* CgameObject, const aiScene* scene, int index);
     void BufferMesh(Mesh* mesh);
     void RenderScene();
+    void RenderGame();
 
     void DeleteMesh(Mesh* mesh);
     

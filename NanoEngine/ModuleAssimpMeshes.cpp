@@ -1,10 +1,12 @@
 #include "ModuleAssimpMeshes.h"
 #include "Application.h"
 #include "ModuleTexture.h"
-#include"GameObject.h"
-#include"ComponentMesh.h"
-#include"ComponentMaterial.h"
-#include"ComponentTransform.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+#include "ComponentTransform.h"
+#include "ComponentCamera.h"
+#include "ModuleRenderer3D.h"
 
 ModuleAssimpMeshes::ModuleAssimpMeshes(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -367,6 +369,25 @@ void ModuleAssimpMeshes::RenderScene()
         meshes[i]->RenderVertexNormals();*/
     }
     glColor3f(1.0f, 1.0f, 1.0f);    
+}
+
+void ModuleAssimpMeshes::RenderGame()
+{
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    //glMatrixMode(GL_PROJECTION);
+    //glLoadMatrixf(App->renderer3D->activeCam->GetProjetionMatrix());
+
+    //glMatrixMode(GL_MODELVIEW);
+    //glLoadMatrixf(App->renderer3D->activeCam->GetViewMatrix());
+
+    //glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->activeCam->frameBuffer);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    for (int i = 0; i < meshes.size(); i++) {
+        meshes[i]->Render();
+    }
 }
 
 void ModuleAssimpMeshes::DeleteMesh(Mesh* mesh) {

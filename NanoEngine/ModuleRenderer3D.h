@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Light.h"
+#include "GameObject.h"
+#include "ComponentCamera.h"
 
 #include "Primitive.h"
 #include "MathGeoLib/include/MathGeoLib.h"
@@ -9,6 +11,8 @@
 #include "ImGui/imgui.h"
 
 #define MAX_LIGHTS 8
+
+class ComponentCamera;
 
 class ModuleRenderer3D : public Module
 {
@@ -84,7 +88,7 @@ public:
 	GLuint VBORect;
 	GLuint EBORect;
 	
-	
+	ComponentCamera* activeCam;
 private:
 	//renderer attributes
 	bool vsync;

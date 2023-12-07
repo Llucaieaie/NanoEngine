@@ -687,13 +687,16 @@ void ModuleEditor::CreateConsoleWindow(bool& showConsoleWindow)
 void ModuleEditor::GameWindow(bool& isActiveGameWindow)
 {
     ImGui::Begin("Game", 0, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNavFocus);
-    gameWindowSize = ImGui::GetContentRegionAvail();
+    sceneWindowSize = ImGui::GetContentRegionAvail();
 
-    ImVec2 newWinSize = gameWindowSize;
+    ImVec2 newWinSize = sceneWindowSize;
     newWinSize.x = (newWinSize.y / 9.0f) * 16.0f;
 
-    float uvOffset = (gameWindowSize.x - newWinSize.x) / 2.0f;
+    float uvOffset = (sceneWindowSize.x - newWinSize.x) / 2.0f;
     uvOffset /= newWinSize.x;
+
+    if (App->renderer3D->activeCam != nullptr)
+        ImGui::Image((ImTextureID)App->renderer3D->activeCam->cameraBuffer, sceneWindowSize, ImVec2(-uvOffset, 1), ImVec2(1 + uvOffset, 0));
 
     ImGui::End();
 }
@@ -712,11 +715,8 @@ void ModuleEditor::SceneWindow(bool& isActiveSceneWindow)
     uvOffset /= newWinSize.x;
 
     //Print image (window size), modify UV's to match 
-    ImGui::Image((ImTextureID)App->renderer3D->cameraBuffer, sceneWindowSize, ImVec2(-uvOffset, 1), ImVec2(1 + uvOffset, 0));
+    ImGui::Image((ImTextureID)App->camera->camera->cameraBuffer, sceneWindowSize, ImVec2(-uvOffset, 1), ImVec2(1 + uvOffset, 0));
     ImGui::End();
-
-    //ImGui::Render();
-    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
 void ModuleEditor::URLButton(const char* url)

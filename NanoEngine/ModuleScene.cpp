@@ -63,10 +63,10 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent)
 
 void ModuleScene::SceneCamera()
 {
-    cameraObj = PrimitivesGeomtriesLibrary::InstanciatePrimitiveGeometry(GeometryType::EMPTY);
+    cameraObj = new GameObject(root);//PrimitivesGeomtriesLibrary::InstanciatePrimitiveGeometry(GeometryType::EMPTY);
     cam = new ComponentCamera();
-    cameraObj->GameObject::AddComponent(cam);
+    cameraObj->AddComponent(cam);
     cameraObj->name = "Main Camera";
-    cameraObj->transform->setPosition(float3(0, 0, 0));
-    cameraObj->transform->calculateMatrix();
+    cameraObj->transform->setPosition(float3(0, 5, -5));
+    //cameraObj->transform->calculateMatrix();
 }

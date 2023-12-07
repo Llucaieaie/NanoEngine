@@ -2,6 +2,7 @@
 #include "ComponentCamera.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ModuleRenderer3D.h"
 
 ComponentCamera::ComponentCamera() :Component(nullptr)
 {
@@ -9,7 +10,7 @@ ComponentCamera::ComponentCamera() :Component(nullptr)
 	type = ComponentType::CAMERA;
 	mOwner = nullptr;
 
-	fov = 60.0f;
+	fov = 100.0f;
 
 	frustum.type = PerspectiveFrustum;
 	frustum.nearPlaneDistance = 0.1f;
@@ -18,7 +19,12 @@ ComponentCamera::ComponentCamera() :Component(nullptr)
 	frustum.up = float3::unitY;
 	frustum.verticalFov = fov * DEGTORAD;
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
-	frustum.pos = float3(0, 0, 0);
+	frustum.pos = float3(0, 5, -5);
+
+	isActive = true;
+	SetActiveCam(this);
+
+	CreateFrameBuffer();
 }
 
 ComponentCamera::~ComponentCamera()
@@ -29,6 +35,9 @@ void ComponentCamera::PrintInspector()
 {
 	if (ImGui::CollapsingHeader("Camera"))
 	{
+		if (ImGui::Checkbox("Active", &isActive)) {
+			SetActiveCam(this);
+		}
 		if (ImGui::SliderFloat("FOV", &fov, 10, 180)) {
 			frustum.verticalFov = fov * DEGTORAD;
 			frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * 16 / 9);
@@ -72,6 +81,45 @@ void ComponentCamera::LookAt(const float3& Spot)
 void ComponentCamera::Move(const float3& Movement)
 {
 	frustum.pos += Movement;
+}
+
+void ComponentCamera::CreateFrameBuffer()
+{
+	glGenFramebuffers(1, &frameBuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
+	glGenTextures(1, &cameraBuffer);
+	glBindTexture(GL_TEXTURE_2D, cameraBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+	float color[4] = { 0.0f,0.0f,0.0f,0.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, cameraBuffer, 0);
+
+	glGenRenderbuffers(1, &renderBuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, renderBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderBuffer);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Framebuffer is not complete!");
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	SetActiveCam(this);
+}
+
+void ComponentCamera::SetActiveCam(ComponentCamera* cam)
+{
+	if (isActive) App->renderer3D->activeCam = cam;
+	else App->renderer3D->activeCam = nullptr;
 }
 
 float* ComponentCamera::GetViewMatrix()

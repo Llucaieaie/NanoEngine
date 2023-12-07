@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ComponentCamera.h"
 
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
@@ -276,8 +275,14 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(App->camera->camera->GetProjetionMatrix());
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->camera->GetViewMatrix());
+
+	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->camera->frameBuffer);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	lights[0].SetPos(App->camera->camera->frustum.pos.x, App->camera->camera->frustum.pos.y, App->camera->camera->frustum.pos.z);
 	
@@ -325,8 +330,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	/*glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);*/
 
-	//(4)--- DRAW BAKE HOUSE ---
-	App->assimpMeshes->RenderScene();
 	
 
 	//(5)--- DRAW TRIANDLE AND ITS NORMAL IN DIRECT MODE
@@ -376,8 +379,34 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	//glEnd();
 	//glLineWidth(1.0f);
 	
-	
-	glBindFramebuffer(GL_FRAMEBUFFER, 0); //****************
+	//--- DRAW BAKE HOUSE ---
+	App->assimpMeshes->RenderScene();
+	if (activeCam != nullptr)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		glLoadIdentity();
+
+		glMatrixMode(GL_PROJECTION);
+		//glLoadMatrixf(App->renderer3D->activeCam->GetProjetionMatrix());
+		glLoadMatrixf(activeCam->GetProjetionMatrix());
+
+		glMatrixMode(GL_MODELVIEW);
+		//glLoadMatrixf(App->renderer3D->activeCam->GetViewMatrix());
+		glLoadMatrixf(activeCam->GetViewMatrix());
+
+		glBindFramebuffer(GL_FRAMEBUFFER, activeCam->frameBuffer);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//lights[0].SetPos(activeCam->frustum.pos.x, activeCam->frustum.pos.y, activeCam->frustum.pos.z);
+
+		//for (uint i = 0; i < MAX_LIGHTS; ++i)
+		//	lights[i].Render();
+
+		App->assimpMeshes->RenderGame();
+	}
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	if (App->editor->DrawEditor() == UPDATE_STOP)
 	{
