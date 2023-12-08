@@ -56,11 +56,9 @@ public:
 	bool GetVsync() const { return vsync; }
 
 	void SetWireframeMode(bool enable);
-
-
-private:
 	void DrawWithWireframe();
-	
+
+	void DrawLine(float3 a, float3 b);
 
 public:
 
@@ -89,6 +87,9 @@ public:
 	GLuint EBORect;
 	
 	ComponentCamera* activeCam;
+
+	LineSegment ray;
+
 private:
 	//renderer attributes
 	bool vsync;

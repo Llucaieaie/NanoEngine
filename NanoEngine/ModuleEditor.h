@@ -117,5 +117,9 @@ private:
 
     //About Window
     std::string license;
+
+public:
+    ImVec2 NormMousePos(float x, float y, float w, float h, ImVec2 p);
+
 };
 

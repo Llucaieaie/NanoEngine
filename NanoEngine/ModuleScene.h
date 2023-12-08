@@ -13,11 +13,12 @@ public:
 
 	bool Init();
 	bool Start();
-	void SceneCamera();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+	void DefaultCamera();
+	void SetGameObjectSelected(GameObject* gameObject);
 
 	GameObject* CreateGameObject(GameObject* parent);
 	GameObject* root = nullptr;
@@ -31,5 +32,4 @@ public:
 	GameObject* bakerHouse;
 	GameObject* cameraObj;
 	ComponentCamera* cam;
-private:
 };

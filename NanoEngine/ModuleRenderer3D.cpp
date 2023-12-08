@@ -383,6 +383,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	
 	//--- DRAW BAKE HOUSE ---
 	App->assimpMeshes->RenderScene();
+
+	DrawLine(ray.a, ray.b);
+
 	if (activeCam != nullptr)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -406,6 +409,9 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		//	lights[i].Render();
 
 		App->assimpMeshes->RenderGame();
+
+		DrawLine(ray.a, ray.b);
+
 	}
 	Grid.Render();
 
@@ -610,3 +616,17 @@ void ModuleRenderer3D::DrawWithWireframe()
 	wireframeMode ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE) : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
+void ModuleRenderer3D::DrawLine(float3 a, float3 b)
+{
+	glBegin(GL_LINES);
+	glLineWidth(2.0f);
+
+	glColor3fv(float3(255.0f, 255.0f, 0.0f).ptr());
+
+	glVertex3fv(a.ptr());
+	glVertex3fv(b.ptr());
+
+	glColor3f(255.f, 255.f, 255.f);
+
+	glEnd();
+}
