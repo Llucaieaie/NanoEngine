@@ -27,8 +27,7 @@ bool ModuleScene::Start() {
     SceneCamera();
 
     //Load Baker House
-    App->assimpMeshes->LoadMeshFromFile("Assets/Models/BakerHouse.fbx");
-
+    bakerHouse = App->assimpMeshes->LoadMeshFromFile("Assets/Models/BakerHouse.fbx");
     return true;
 }
 
@@ -44,6 +43,9 @@ update_status ModuleScene::Update(float dt) {
 
 update_status ModuleScene::PostUpdate(float dt) {
     
+    if (App->hierarchy->objSelected != nullptr)
+        bakerHouse->transform->DrawGuizmo(App->hierarchy->objSelected, cam->GetViewMatrix(), cam->GetProjetionMatrix());
+
     return UPDATE_CONTINUE;
 }
 

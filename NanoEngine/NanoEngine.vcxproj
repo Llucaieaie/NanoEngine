@@ -50,6 +50,9 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)ImGuizmo/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -89,6 +92,12 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImGuizmo\GraphEditor.h" />
+    <ClInclude Include="ImGuizmo\ImCurveEdit.h" />
+    <ClInclude Include="ImGuizmo\ImGradient.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="ImGuizmo\ImSequencer.h" />
+    <ClInclude Include="ImGuizmo\ImZoomSlider.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_sdl2.h" />
@@ -184,6 +193,11 @@
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
+    <ClCompile Include="ImGuizmo\GraphEditor.cpp" />
+    <ClCompile Include="ImGuizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="ImGuizmo\ImGradient.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="ImGui\backends\imgui_impl_sdl2.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />

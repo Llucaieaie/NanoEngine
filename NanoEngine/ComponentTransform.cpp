@@ -100,9 +100,25 @@ void ComponentTransform:: PrintInspector() {
 		ImGui::Text("X\t\t Y\t\t Z");
 		ImGui::DragFloat3("Scale", scale.ptr());
 	}
-
-
 	calculateMatrix();
+}
 
+void ComponentTransform::DrawGuizmo(GameObject* obj, float* view, float* projection)
+{
+	//ImGuizmo::BeginFrame();
+	//ImGuizmo::Enable(true);
 
+	//ComponentTransform* transform = obj->GetTransformComponent();
+	//ImVec2 cornerPos = ImGui::GetWindowPos();
+	//ImVec2 size = ImGui::GetContentRegionMax();
+
+	//int offset = ImGui::GetFrameHeight() / 2;
+	//ImGuizmo::SetRect(cornerPos.x, cornerPos.y + offset, size.x, size.y);
+	//ImGuizmo::SetDrawlist();
+	////if (ImGuizmo::Manipulate(App->camera->viewMatrix.Transposed().ptr(), camera->frustum.ProjectionMatrix().Transposed().ptr(), operation, mode, transform->getGlobalMatrix().ptr()))
+	//if (ImGuizmo::Manipulate(view, projection, operation, mode, transform->getGlobalMatrix().ptr()))
+	//{
+
+	//}
+	//ImGui::EndFrame();
 }
