@@ -1,0 +1,38 @@
+{
+    "App": {
+        "FPS": 0
+    },
+    "Window": {
+        "fullscreen": false,
+        "borderless": false,
+        "resizable": true,
+        "fullscreen desktop": false,
+        "width": 1280,
+        "height": 720
+    },
+    "Camera3D": {
+        "X.x": 0,
+        "X.y": 0,
+        "X.z": -1,
+        "Y.x": -0,
+        "Y.y": 1,
+        "Y.z": 0,
+        "Z.x": 1,
+        "Z.y": 0,
+        "Z.z": 0,
+        "Reference.x": 0,
+        "Reference.y": 0,
+        "Reference.z": 0,
+        "Position.x": 0,
+        "Position.y": 0,
+        "Position.z": 0
+    },
+    "Input": {},
+    "Physics3D": {},
+    "Renderer3D": {},
+    "Editor": {},
+    "Hierarchy": {},
+    "AssimpMeshes": {},
+    "Texture": {},
+    "Scene": {}
+}

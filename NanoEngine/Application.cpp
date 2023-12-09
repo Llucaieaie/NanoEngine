@@ -2,7 +2,6 @@
 
 Application::Application()
 {
-
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	renderer3D = new ModuleRenderer3D(this);
@@ -28,6 +27,9 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 	AddModule(editor);
+
+	isSavingConfig = false;
+	isLoadingConfig = true;
 }
 
 Application::~Application()
@@ -45,7 +47,19 @@ bool Application::Init()
 	
 	bool ret = true;
 
-	maxFrameRate = 300;
+	configFileName = "EngineConfiguration.json";
+
+	JSON_Value* root = configFile.FileToValue(configFileName);
+
+	if (configFile.GetRootValue() == NULL)
+	{
+		LOG("Error loading configuration file");
+		ret = false;
+	}
+
+	JsonParser application = configFile.GetChild(root, "App");
+
+	maxFrameRate = application.JsonValToNumber("FPS");
 
 	// Call Init() in all modules
 	for (std::vector<Module*>::const_iterator it = list_modules.cbegin(); it != list_modules.cend() && ret; ++it)
@@ -74,7 +88,6 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	 
 	if (renderer3D->GetVsync())
 	{
 		msLastFrame = ms_timer.Read();
@@ -85,9 +98,13 @@ void Application::FinishUpdate()
 			SDL_Delay(static_cast<Uint32>(fabs(timeToWait - msLastFrame)));
 
 		msLastFrame = ms_timer.Read();
-
 	}
 
+	if (isLoadingConfig)
+		LoadConfig();
+	
+	if (isSavingConfig)
+		SaveConfig();
 }
 
 
@@ -181,7 +198,62 @@ void Application::SetState(GameState gameState)
 	this->gameState = gameState;
 }
 
+void Application::SaveConfigRequest() 
+{ 
+	isSavingConfig = true; 
+}
+
+void Application::LoadConfigRequest() 
+{ 
+	isLoadingConfig = true; 
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
+}
+
+void Application::SaveConfig()
+{
+	JSON_Value* root = configFile.GetRootValue();
+
+	JsonParser application = configFile.SetChild(root, "App");
+
+	application.SetNewJsonNumber(application.ValueToObject(application.GetRootValue()), "FPS", maxFrameRate);
+
+
+	// Call SaveConfig() in all modules
+	std::vector<Module*>::iterator item;
+
+	for (item = list_modules.begin(); item != list_modules.end(); ++item)
+	{
+		(*item)->SaveConfig(configFile.SetChild(root, (*item)->name));
+	}
+
+	configFile.SerializeFile(root, configFileName);
+	isSavingConfig = false;
+
+	LOG("Configuration saved");
+}
+
+
+void Application::LoadConfig()
+{
+	JSON_Value* root = configFile.GetRootValue();
+
+	JsonParser application = configFile.GetChild(root, "App");
+
+	maxFrameRate = application.JsonValToNumber("FPS");
+
+
+	std::vector<Module*>::iterator item;
+
+	for (item = list_modules.begin(); item != list_modules.end(); ++item)
+	{
+		(*item)->LoadConfig(configFile.GetChild(root, (*item)->name));
+	}
+
+	isLoadingConfig = false;
+
+	LOG("Configuration loaded");
 }

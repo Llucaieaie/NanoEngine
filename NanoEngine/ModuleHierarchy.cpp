@@ -10,6 +10,7 @@
 
 ModuleHierarchy::ModuleHierarchy(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Hierarchy";
 
 	TargetDropped = nullptr;
 	objSelected = nullptr;

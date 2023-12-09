@@ -11,7 +11,9 @@
 #include "ModuleAssimpMeshes.h"
 #include "ModuleTexture.h"
 #include "ModuleScene.h"
-#include"ModuleHierarchy.h"
+#include "ModuleHierarchy.h"
+
+#include "JsonParser.h"
 
 #include<vector>
 
@@ -48,6 +50,12 @@ public:
 	float	gameDt;
 	GameState gameState;
 
+	JsonParser configFile;
+	const char* configFileName;
+
+	bool isSavingConfig;
+	bool isLoadingConfig;
+
 public:
 
 	Application();
@@ -69,11 +77,17 @@ public:
 	GameState GetState();
 	void SetState(GameState gameState);
 
+	void SaveConfigRequest();
+	void LoadConfigRequest();
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+	void SaveConfig();
+	void LoadConfig();
 };
 
 extern Application* App;

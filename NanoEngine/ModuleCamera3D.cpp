@@ -10,6 +10,8 @@
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Camera3D";
+
 	camState = CamStates::NORMAL;
 
 	X = float3(1.0f, 0.0f, 0.0f);
@@ -314,4 +316,38 @@ void ModuleCamera3D::CalculateViewMatrix()
 {
 	//todo: USE MATHGEOLIB here BEFORE 1st delivery! (TIP: Use MathGeoLib/Geometry/Frustum.h, view and projection matrices are managed internally.)
 	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -(X.Dot(Position)), -(Y.Dot(Position)), -(Z.Dot(Position)), 1.0f);
+}
+
+bool ModuleCamera3D::SaveConfig(JsonParser& json) {
+    SaveVectorToJson(json, "ForwardVector", X);
+    SaveVectorToJson(json, "UpVector", Y);
+    SaveVectorToJson(json, "RightVector", Z);
+    SaveVectorToJson(json, "CameraPosition", Position);
+    SaveVectorToJson(json, "TargetPosition", Reference);
+
+    return true;
+}
+
+bool ModuleCamera3D::LoadConfig(JsonParser& json) {
+    LoadVectorFromJson(json, "ForwardVector", X);
+    LoadVectorFromJson(json, "UpVector", Y);
+    LoadVectorFromJson(json, "RightVector", Z);
+    LoadVectorFromJson(json, "CameraPosition", Position);
+    LoadVectorFromJson(json, "TargetPosition", Reference);
+
+    LookAt(Reference);
+
+    return true;
+}
+
+void ModuleCamera3D::SaveVectorToJson(JsonParser& json, const std::string& name, const float3& vector) {
+    json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), (name + ".x").c_str(), vector.x);
+    json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), (name + ".y").c_str(), vector.y);
+    json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), (name + ".z").c_str(), vector.z);
+}
+
+void ModuleCamera3D::LoadVectorFromJson(JsonParser& json, const std::string& name, float3& vector) {
+    vector.x = json.JsonValToNumber((name + ".x").c_str());
+    vector.y = json.JsonValToNumber((name + ".y").c_str());
+    vector.z = json.JsonValToNumber((name + ".z").c_str());
 }

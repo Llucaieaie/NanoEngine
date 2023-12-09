@@ -57,11 +57,6 @@ private:
 public:
     std::deque<std::string>* logs = nullptr;
 
-
-private:
-    std::vector<float> mFPSLog;
-    std::vector<float> mMsLog;
-    
     //Window info
     bool showAboutWindow;
     bool fullscreen;
@@ -70,6 +65,10 @@ private:
     bool fulldesktop;
     float brightness;
 
+private:
+    std::vector<float> mFPSLog;
+    std::vector<float> mMsLog;
+    
     //Renderer info
     bool vsync;
     bool depthTest;

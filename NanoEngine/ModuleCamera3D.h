@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
+#include <vector>
 
 class ComponentCamera;
 
@@ -32,9 +33,14 @@ public:
 	void RotationAroundCamera(float dx, float dy, float sensitivity);
 	float3 RotateVector(const float3& u, float angle, const float3& v);
 	float3 SelectedObjectPos();
-private:
 
 	void CalculateViewMatrix();
+
+	bool SaveConfig(JsonParser& json);
+	bool LoadConfig(JsonParser& json);
+
+	void SaveVectorToJson(JsonParser& json, const std::string& name, const float3& vector);
+	void LoadVectorFromJson(JsonParser& json, const std::string& name, float3& vector);
 
 public:
 	

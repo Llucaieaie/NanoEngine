@@ -20,6 +20,7 @@
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+    name = "Editor"; 
     logs = new std::deque<std::string>();
 }
 
@@ -177,6 +178,14 @@ update_status ModuleEditor::DrawEditor()
         {
             if (ImGui::MenuItem("Quit Application", "ESC")) {
                 ret = UPDATE_STOP;
+            }
+            if (ImGui::MenuItem("Save"))
+            {
+                App->SaveConfigRequest();
+            }
+            if (ImGui::MenuItem("Load"))
+            {
+                App->LoadConfigRequest();
             }
            
             ImGui::EndMenu();
@@ -338,13 +347,13 @@ update_status ModuleEditor::DrawEditor()
 
 void ModuleEditor::GameStateButtons()
 {
-    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoMove;
 
     float windowWidth = 105.0f;
     float windowHeight = 40.0f;
 
     float windowPosX = (ImGui::GetIO().DisplaySize.x - windowWidth) / 2.0f;
-    float windowPosY = (30.0f);
+    float windowPosY = (10.0f);
 
     ImGui::SetNextWindowPos(ImVec2(windowPosX, windowPosY));
     ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));

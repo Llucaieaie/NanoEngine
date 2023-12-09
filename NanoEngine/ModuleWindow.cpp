@@ -4,6 +4,8 @@
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Window"; 
+	
 	window = NULL;
 	screen_surface = NULL;
 }
@@ -103,6 +105,7 @@ void ModuleWindow::SetTitle(const char* title)
 
 void ModuleWindow::SetFullscreen(bool newFullscreen) {
 	fullscreen = newFullscreen;
+	App->editor->fullscreen = newFullscreen;
 
 	fullscreen ? SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) : SDL_SetWindowFullscreen(window, 0);
 	
@@ -112,6 +115,7 @@ void ModuleWindow::SetFullscreen(bool newFullscreen) {
 
 void ModuleWindow::SetResizable(bool newResizable) {
 	resizable = newResizable;
+	App->editor->resizable = newResizable;
 
 	resizable ? SDL_SetWindowResizable(window, SDL_TRUE) : SDL_SetWindowResizable(window, SDL_FALSE);
 	
@@ -121,6 +125,7 @@ void ModuleWindow::SetResizable(bool newResizable) {
 
 void ModuleWindow::SetBorderless(bool newBorderless) {
 	borderless = newBorderless;
+	App->editor->borderless = newBorderless;
 
 	borderless ? SDL_SetWindowBordered(window, SDL_FALSE) : SDL_SetWindowBordered(window, SDL_TRUE);
 	
@@ -130,7 +135,8 @@ void ModuleWindow::SetBorderless(bool newBorderless) {
 
 void ModuleWindow::SetFulldesktop(bool newFulldesktop) {
 	fulldesktop = newFulldesktop;
-																						// Modo ventana
+	App->editor->fulldesktop = newFulldesktop;
+	
 	fulldesktop ? SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) : SDL_SetWindowFullscreen(window, 0);
 
 	std::string aux = "Window Fulldesktop attribute updated to: " + std::string(newFulldesktop ? "true" : "false");
@@ -154,4 +160,45 @@ void ModuleWindow::OnHeightChanged()
 	std::string aux = "Window Height attribute updated to: " + std::to_string(height);
 	LOG(aux.c_str());
 
+}
+
+bool ModuleWindow::SaveConfig(JsonParser& json)
+{
+	json.SetNewJsonBool(json.ValueToObject(json.GetRootValue()), "fullscreen", fullscreen);
+	json.SetNewJsonBool(json.ValueToObject(json.GetRootValue()), "borderless", borderless);
+	json.SetNewJsonBool(json.ValueToObject(json.GetRootValue()), "resizable", resizable);
+	json.SetNewJsonBool(json.ValueToObject(json.GetRootValue()), "fullscreen desktop", fulldesktop);
+
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "width", width);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "height", height);
+
+	return true;
+}
+
+bool ModuleWindow::LoadConfig(JsonParser& json)
+{
+	fullscreen = json.JsonValToBool("fullscreen");
+	borderless = json.JsonValToBool("borderless");
+	resizable = json.JsonValToBool("resizable");
+	fulldesktop = json.JsonValToBool("fullscreen desktop");
+
+	width = json.JsonValToNumber("width") * SCREEN_SIZE;
+	height = json.JsonValToNumber("height") * SCREEN_SIZE;
+
+	if (fullscreen) SetFullscreen(fullscreen);
+	if (fulldesktop) SetFulldesktop(fulldesktop);
+	if (borderless) SetBorderless(borderless);
+	if (resizable) SetResizable(resizable);
+
+	SetSize(width, height);
+
+	return true;
+}
+
+void ModuleWindow::SetSize(int width, int height)
+{
+	this->width = width;
+	this->height = height;
+
+	SDL_SetWindowSize(window, width, height);
 }

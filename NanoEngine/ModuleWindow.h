@@ -2,7 +2,10 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
+
 #include "SDL/include/SDL.h"
+#include"JsonParser.h"
+#include "parson.h"
 
 class Application;
 
@@ -34,6 +37,11 @@ public:
 	//"Listeners" to Window Width and Height changes
 	void OnWidthChanged();
 	void OnHeightChanged();
+
+	bool SaveConfig(JsonParser& json);
+	bool LoadConfig(JsonParser& json);
+
+	void SetSize(int width, int height);
 
 public:
 	//The window we'll be rendering to

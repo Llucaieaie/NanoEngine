@@ -363,6 +363,9 @@
     <ClInclude Include="ImGuizmo\ImZoomSlider.h">
       <Filter>Externals\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="JsonParser.h">
+      <Filter>Externals</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp">
@@ -574,6 +577,9 @@
     </ClCompile>
     <ClCompile Include="ImGuizmo\ImSequencer.cpp">
       <Filter>Externals\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonParser.cpp">
+      <Filter>Externals</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
 #include"Globals.h"
+#include"JsonParser.h"
 
 class Application;
 struct PhysBody3D;
@@ -12,8 +13,11 @@ private :
 public:
 	Application* App;
 
-	Module(Application* parent, bool start_enabled = true) : App(parent)
-	{}
+	const char* name;
+
+	Module(Application* parent, bool start_enabled = true) : App(parent), enabled(start_enabled), name("notNamed") 
+	{
+	}
 
 	virtual ~Module()
 	{}
@@ -50,4 +54,15 @@ public:
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+
+	virtual bool LoadConfig(JsonParser& json)
+	{
+		return true;
+	}
+
+	virtual bool SaveConfig(JsonParser& json)
+	{
+		return true;
+	}
+
 };
