@@ -43,16 +43,17 @@ public:
 
 private:
 
-    
+    void MenuBar();
+    void GameStateButtons();
     void CreateAboutWindow(bool& showAboutWindow);
     void URLButton(const char* url);
     void CreateConsoleWindow(bool& showConsoleWindow);
     void GameWindow(bool& isActiveGameWindow);
     void SceneWindow(bool& isActiveSceneWindow);
-    void ModuleEditor::WindowCollapsingHeader();
-    void ModuleEditor::RenderCollapsingHeader();
+    void WindowCollapsingHeader();
+    void RenderCollapsingHeader();
     void UpdatePlots();
-    
+
 public:
     std::deque<std::string>* logs = nullptr;
 

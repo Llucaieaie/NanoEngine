@@ -37,6 +37,8 @@ update_status ModuleScene::PreUpdate(float dt) {
 }
 
 update_status ModuleScene::Update(float dt) {
+
+    //cameraObj->transform->setPosition(cameraObj->transform->getPosition() + float3(.01f * App->gameDt, .01f * App->gameDt, .01f * App->gameDt));
     
     return UPDATE_CONTINUE;
 }

@@ -307,7 +307,7 @@ update_status ModuleEditor::DrawEditor()
         ImGui::EndMainMenuBar();
     }
 
-
+    GameStateButtons();
 
     if (App->hierarchy->objSelected && isActiveInspector) {
 
@@ -334,6 +334,59 @@ update_status ModuleEditor::DrawEditor()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     return ret;
+}
+
+void ModuleEditor::GameStateButtons()
+{
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar;
+
+    float windowWidth = 105.0f;
+    float windowHeight = 40.0f;
+
+    float windowPosX = (ImGui::GetIO().DisplaySize.x - windowWidth) / 2.0f;
+    float windowPosY = (30.0f);
+
+    ImGui::SetNextWindowPos(ImVec2(windowPosX, windowPosY));
+    ImGui::SetNextWindowSize(ImVec2(windowWidth, windowHeight));
+
+    ImGui::Begin("ControlsBar", nullptr, windowFlags);
+
+
+    // Botón PLAY
+    if (ImGui::Button("Play", ImVec2(25, 25)))
+    {
+        if (App->GetIsRunning()) {
+            App->SetState(GameState::STOPPED);
+            ImGui::SetWindowFocus("Scene");
+        }
+        else {
+            App->SetState(GameState::PLAYING);
+            ImGui::SetWindowFocus("Game");
+        }
+    }
+
+    ImGui::SameLine();
+
+    // Botón PAUSE
+    if (ImGui::Button("Pause", ImVec2(25, 25)))
+    {
+        if (App->GetIsRunning()) {
+            App->SetState(GameState::PAUSED);
+        }
+    }
+
+    ImGui::SameLine();
+
+    // Botón STOP
+    if (ImGui::Button("Stop", ImVec2(25, 25)))
+    {
+        if (App->GetIsRunning()) {
+            App->SetState(GameState::STOPPED);
+            ImGui::SetWindowFocus("Scene");
+        }
+    }
+
+    ImGui::End();
 }
 
 void ModuleEditor::ViewCollapsingHeader() {

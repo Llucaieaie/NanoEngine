@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
+#include <chrono>
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
@@ -15,7 +16,9 @@ enum main_states
 	MAIN_EXIT
 };
 
-	Application* App = NULL;
+Application* App = NULL;
+long long timeElapsed = 0;
+
 int main(int argc, char ** argv)
 {
 	LOG("Starting game '%s'...", TITLE);
@@ -26,6 +29,8 @@ int main(int argc, char ** argv)
 
 	while (state != MAIN_EXIT)
 	{
+		auto start = std::chrono::steady_clock::now();
+
 		switch (state)
 		{
 		case MAIN_CREATION:
@@ -53,6 +58,8 @@ int main(int argc, char ** argv)
 
 		case MAIN_UPDATE:
 		{
+			App->SetDt((float)timeElapsed / 1000.0f);
+
 			int update_return = App->Update();
 
 			if (update_return == UPDATE_ERROR)
@@ -63,8 +70,8 @@ int main(int argc, char ** argv)
 
 			if (update_return == UPDATE_STOP)
 				state = MAIN_FINISH;
-		}
 			break;
+		}
 
 		case MAIN_FINISH:
 
@@ -79,8 +86,10 @@ int main(int argc, char ** argv)
 			state = MAIN_EXIT;
 
 			break;
-
 		}
+
+		auto end = std::chrono::steady_clock::now();
+		timeElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 	}
 
 	delete App;

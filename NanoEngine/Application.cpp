@@ -41,6 +41,8 @@ Application::~Application()
 
 bool Application::Init()
 {
+	gameState = GameState::STOPPED;
+	
 	bool ret = true;
 
 	maxFrameRate = 300;
@@ -94,6 +96,10 @@ void Application::FinishUpdate()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
+
+	if (gameState == GameState::PLAYING) gameDt = dt;
+	else gameDt = 0;
+
 	PrepareUpdate();
 	
 	for (std::vector<Module*>::const_iterator it = list_modules.cbegin(); it != list_modules.cend() && ret == UPDATE_CONTINUE; ++it)
@@ -133,6 +139,46 @@ void Application::LOGToEditor(const char* text)
 	
 	editor->LOGToConsole(text);
 	
+}
+
+float Application::GetDt() 
+{ 
+	return dt; 
+}
+
+float Application::GetFrameRate() 
+{ 
+	return 1.f / dt; 
+}
+
+void Application::SetDt(float dt)
+{
+	this->dt = dt;
+}
+
+float Application::GetGameDt()
+{
+	return gameDt;
+}
+
+bool Application::GetIsRunning()
+{
+	return gameState == GameState::PLAYING;
+}
+
+bool Application::GetIsPaused()
+{
+	return gameState == GameState::PAUSED;
+}
+
+GameState Application::GetState()
+{
+	return gameState;
+}
+
+void Application::SetState(GameState gameState)
+{
+	this->gameState = gameState;
 }
 
 void Application::AddModule(Module* mod)

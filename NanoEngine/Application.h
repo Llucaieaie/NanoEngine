@@ -15,6 +15,13 @@
 
 #include<vector>
 
+enum class GameState
+{
+	PLAYING,
+	PAUSED,
+	STOPPED
+};
+
 class Application
 {
 public:
@@ -38,6 +45,8 @@ public:
 	uint	maxFrameRate;
 	float	msLastFrame;
 
+	float	gameDt;
+	GameState gameState;
 
 public:
 
@@ -50,8 +59,15 @@ public:
 
 	void LOGToEditor(const char* text);
 
-	float GetDt() const { return dt; }
-	float GetFrameRate() const { return 1.f / dt; }
+	float GetDt();
+	void SetDt(float dt);
+	float GetFrameRate();
+	float GetGameDt();
+	bool GetIsRunning();
+	bool GetIsPaused();
+	
+	GameState GetState();
+	void SetState(GameState gameState);
 
 private:
 
