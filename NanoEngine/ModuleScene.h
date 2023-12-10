@@ -36,10 +36,13 @@ public:
 	ComponentCamera* cam;
 
 	bool SaveConfig(JsonParser& json);
+	void SaveObjectToJson(JsonParser& json, int i);
 	bool LoadConfig(JsonParser& json);
 
 	JsonParser objNode;
+	JsonParser childNode;
 	JsonParser compNode;
+
 	const char* objNodeName;
 	const char* compNodeName;
 };

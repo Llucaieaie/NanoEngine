@@ -5,6 +5,8 @@
 #include "ModuleAssimpMeshes.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled) 
 {
@@ -86,21 +88,13 @@ bool ModuleScene::SaveConfig(JsonParser& json)
     LOG("Scene children: %i",root->mChildren.size());
     for (int i = 0; i < root->mChildren.size(); i++)
     {
-        //std::string objectNumber = "Object " + std::to_string(i);
-        //const char* num = objectNumber.c_str();
-
-        //JSON_Object* object = json.SetNewJsonNode(json.ValueToObject(json.GetRootValue()), root->mChildren[i]->name.c_str());
         objNode = json.SetChild(json.GetRootValue(), root->mChildren[i]->name.c_str());
-            //json.SetNewJsonNode(json.ValueToObject(json.GetRootValue()), root->mChildren[i]->name.c_str());
-        //json.SetNewJsonString(object, num, root->mChildren[i]->name.c_str());
 
         if (root->mChildren[i]->mComponents.size() != 0)
         {
             for (int j = 0; j < root->mChildren[i]->mComponents.size(); j++)
             {
-                //json.SetNewJsonString(json.ValueToObject(json.GetRootValue()), "    ", root->mChildren[i]->mComponents[j]->name);
-                //JSON_Object* component = json.SetNewJsonNode(object, root->mChildren[i]->mComponents[j]->name);
-                compNode = objNode.SetChild(objNode.GetRootValue(), root->mChildren[i]->mComponents[j]->name);
+                JsonParser compNode = objNode.SetChild(objNode.GetRootValue(), root->mChildren[i]->mComponents[j]->name);
 
                 if (root->mChildren[i]->mComponents[j]->type == ComponentType::TRANSFORM)
                 {                    
@@ -116,6 +110,27 @@ bool ModuleScene::SaveConfig(JsonParser& json)
                     compNode.SetNewJsonNumber(compNode.ValueToObject(compNode.GetRootValue()), "scale.y", root->mChildren[i]->GetTransformComponent()->getScale().y);
                     compNode.SetNewJsonNumber(compNode.ValueToObject(compNode.GetRootValue()), "scale.z", root->mChildren[i]->GetTransformComponent()->getScale().z);
                 }
+
+                if (root->mChildren[i]->mComponents[j]->type == ComponentType::CAMERA)
+                {
+                    compNode.SetNewJsonBool(compNode.ValueToObject(compNode.GetRootValue()), "Active", root->mChildren[i]->GetComponentCamera()->isActive);
+                    compNode.SetNewJsonNumber(compNode.ValueToObject(compNode.GetRootValue()), "FOV", root->mChildren[i]->GetComponentCamera()->fov);
+                    compNode.SetNewJsonNumber(compNode.ValueToObject(compNode.GetRootValue()), "Far Distance", root->mChildren[i]->GetComponentCamera()->frustum.farPlaneDistance);
+                    compNode.SetNewJsonNumber(compNode.ValueToObject(compNode.GetRootValue()), "Near Distance", root->mChildren[i]->GetComponentCamera()->frustum.nearPlaneDistance);
+                }
+
+                if (root->mChildren[i]->mComponents[j]->type == ComponentType::MATERIAL)
+                {
+                    compNode.SetNewJsonBool(compNode.ValueToObject(compNode.GetRootValue()), "Active", root->mChildren[i]->GetComponentTexture()->isActive);
+                    compNode.SetNewJsonNumber(compNode.ValueToObject(compNode.GetRootValue()), "ID", root->mChildren[i]->GetComponentTexture()->textureID);
+                    compNode.SetNewJsonString(compNode.ValueToObject(compNode.GetRootValue()), "Texture Path", root->mChildren[i]->GetComponentTexture()->pathTexture.c_str());
+                }
+
+                if (root->mChildren[i]->mComponents[j]->type == ComponentType::MESH)
+                {
+                    compNode.SetNewJsonBool(compNode.ValueToObject(compNode.GetRootValue()), "Active", root->mChildren[i]->GetMeshComponent()->isActive);
+                    compNode.SetNewJsonBool(compNode.ValueToObject(compNode.GetRootValue()), "Show normals", root->mChildren[i]->GetMeshComponent()->faceNormals);
+                }
             }
         }
     }
@@ -125,27 +140,24 @@ bool ModuleScene::SaveConfig(JsonParser& json)
 
 bool ModuleScene::LoadConfig(JsonParser& json)
 {
-    for (int i = 0; i < root->mChildren.size(); i++)
-    {
-        for (int j = 0; j < root->mChildren[i]->mComponents.size(); j++)
-        {
-            if (root->mChildren[i]->mComponents[j]->type == ComponentType::TRANSFORM)
-            {
-                //json.GetChild(json.GetRootValue(), root->mChildren[i]->name.c_str()).GetChild(objNode.GetChild)
-                float3 pos = { (float)json.JsonValToNumber("pos.x"),
-                    (float)json.JsonValToNumber("pos.y"),
-                    (float)json.JsonValToNumber("pos.z")
-                };
-                //double posX = json["Scene"]["Main Camera"]["Transform component"]["pos.x"];
-                LOG("position: %d, %d, %d", compNode.JsonValToNumber("pos.x"), compNode.JsonValToNumber("pos.y"), compNode.JsonValToNumber("pos.z"));
-                JSON_Value* test = json.GetChild(json.GetRootValue(), root->mChildren[i]->name.c_str()).GetRootValue();
-                LOG("positiony: %d", json.GetChild(json.GetRootValue(), root->mChildren[i]->name.c_str()).GetChild(test, root->mChildren[i]->mComponents[j]->name));
+    //for (int i = 0; i < root->mChildren.size(); i++)
+    //{
+    //    for (int j = 0; j < root->mChildren[i]->mComponents.size(); j++)
+    //    {
+    //        if (root->mChildren[i]->mComponents[j]->type == ComponentType::TRANSFORM)
+    //        {
+    //            float3 pos = { (float)json.JsonValToNumber("pos.x"),
+    //                (float)json.JsonValToNumber("pos.y"),
+    //                (float)json.JsonValToNumber("pos.z")
+    //            };
+    //            LOG("position: %d, %d, %d", compNode.JsonValToNumber("pos.x"), compNode.JsonValToNumber("pos.y"), compNode.JsonValToNumber("pos.z"));
+    //            JSON_Value* test = json.GetChild(json.GetRootValue(), root->mChildren[i]->name.c_str()).GetRootValue();
+    //            LOG("positiony: %d", json.GetChild(json.GetRootValue(), root->mChildren[i]->name.c_str()).GetChild(test, root->mChildren[i]->mComponents[j]->name));
 
-                //root->mChildren[i]->transform->setPosition(pos);
-                root->mChildren[i]->transform->setPosition(pos);
+    //            root->mChildren[i]->transform->setPosition(pos);
 
-            }
-        }
-    }
+    //        }
+    //    }
+    //}
     return true;
 }

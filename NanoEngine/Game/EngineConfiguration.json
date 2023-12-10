@@ -47,7 +47,12 @@
                 "scale.y": 1,
                 "scale.z": 1
             },
-            "Camera component": {}
+            "Camera component": {
+                "Active": true,
+                "FOV": 60,
+                "Far Distance": 100,
+                "Near Distance": 0.10000000149011612
+            }
         },
         "BakerHouse.fbx": {
             "Transform component": {
