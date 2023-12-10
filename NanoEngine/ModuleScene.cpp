@@ -45,9 +45,6 @@ update_status ModuleScene::Update(float dt) {
 
 update_status ModuleScene::PostUpdate(float dt) {
     
-    if (App->hierarchy->objSelected != nullptr)
-        bakerHouse->transform->DrawGuizmo(App->hierarchy->objSelected, cam->GetViewMatrix(), cam->GetProjetionMatrix());
-
     return UPDATE_CONTINUE;
 }
 

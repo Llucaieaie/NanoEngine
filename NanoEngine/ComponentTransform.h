@@ -3,7 +3,6 @@
 #include "Component.h"
 #include "MathGeoLib/include/MathGeoLib.h"
 #include "ImGui/imgui.h"
-#include "ImGuizmo/ImGuizmo.h"
 #include <vector>
 #include <string>
 
@@ -31,10 +30,6 @@ public:
 
 	void PrintInspector();
 
-	void DrawGuizmo(GameObject* obj, float* view, float* projection);
-
-	ImGuizmo::OPERATION operation;
-	ImGuizmo::MODE mode;
 private:
 
 	float4x4 matrix;
