@@ -17,7 +17,7 @@ public:
 
 	Mesh* mesh;
 	
-	bool faceNormals;
+	bool faceNormals = false;
 
 	void PrintInspector();
 };

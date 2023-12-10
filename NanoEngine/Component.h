@@ -23,6 +23,7 @@ public:
 	void DisableComponent();
 	
 	ComponentType type;
+	const char* name;
 	bool isActive;
 
 	GameObject*	mOwner;

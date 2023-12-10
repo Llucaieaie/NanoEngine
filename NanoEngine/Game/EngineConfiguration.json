@@ -11,21 +11,21 @@
         "height": 720
     },
     "Camera3D": {
-        "X.x": 0,
+        "X.x": 1,
         "X.y": 0,
-        "X.z": -1,
-        "Y.x": -0,
+        "X.z": 0,
+        "Y.x": 0,
         "Y.y": 1,
         "Y.z": 0,
-        "Z.x": 1,
+        "Z.x": 0,
         "Z.y": 0,
-        "Z.z": 0,
-        "Reference.x": 0,
-        "Reference.y": 0,
-        "Reference.z": 0,
+        "Z.z": 1,
+        "Reference.x": -431602080,
+        "Reference.y": -431602080,
+        "Reference.z": -431602080,
         "Position.x": 0,
-        "Position.y": 0,
-        "Position.z": 0
+        "Position.y": 2,
+        "Position.z": -5
     },
     "Input": {},
     "Physics3D": {},
@@ -34,5 +34,33 @@
     "Hierarchy": {},
     "AssimpMeshes": {},
     "Texture": {},
-    "Scene": {}
+    "Scene": {
+        "Main Camera": {
+            "Transform component": {
+                "pos.x": 0,
+                "pos.y": 2,
+                "pos.z": -5,
+                "rot.x": 0,
+                "rot.y": 0,
+                "rot.z": 0,
+                "scale.x": 1,
+                "scale.y": 1,
+                "scale.z": 1
+            },
+            "Camera component": {}
+        },
+        "BakerHouse.fbx": {
+            "Transform component": {
+                "pos.x": 0,
+                "pos.y": 0,
+                "pos.z": 0,
+                "rot.x": 0,
+                "rot.y": 0,
+                "rot.z": 0,
+                "scale.x": 1,
+                "scale.y": 1,
+                "scale.z": 1
+            }
+        }
+    }
 }

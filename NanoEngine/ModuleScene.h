@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include"JsonParser.h"
+#include "parson.h"
 
 class GameObject;
 class ComponentCamera;
@@ -32,4 +34,12 @@ public:
 	GameObject* bakerHouse;
 	GameObject* cameraObj;
 	ComponentCamera* cam;
+
+	bool SaveConfig(JsonParser& json);
+	bool LoadConfig(JsonParser& json);
+
+	JsonParser objNode;
+	JsonParser compNode;
+	const char* objNodeName;
+	const char* compNodeName;
 };

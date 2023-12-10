@@ -5,6 +5,7 @@
 
 ComponentMaterial::ComponentMaterial() : Component(nullptr)
 {
+	name = "Material component";
 	type = ComponentType::MATERIAL;
 }
 ComponentMaterial::ComponentMaterial(GameObject* owner) : Component(owner)

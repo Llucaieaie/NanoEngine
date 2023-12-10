@@ -314,31 +314,84 @@ float3 ModuleCamera3D::RotateVector(const float3& u, float angle, const float3& 
 // -----------------------------------------------------------------
 void ModuleCamera3D::CalculateViewMatrix()
 {
-	//todo: USE MATHGEOLIB here BEFORE 1st delivery! (TIP: Use MathGeoLib/Geometry/Frustum.h, view and projection matrices are managed internally.)
 	ViewMatrix = float4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -(X.Dot(Position)), -(Y.Dot(Position)), -(Z.Dot(Position)), 1.0f);
 }
 
-bool ModuleCamera3D::SaveConfig(JsonParser& json) {
-    SaveVectorToJson(json, "ForwardVector", X);
-    SaveVectorToJson(json, "UpVector", Y);
-    SaveVectorToJson(json, "RightVector", Z);
-    SaveVectorToJson(json, "CameraPosition", Position);
-    SaveVectorToJson(json, "TargetPosition", Reference);
+bool ModuleCamera3D::SaveConfig(JsonParser& json)
+{
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "X.x", X.x);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "X.y", X.y);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "X.z", X.z);
 
-    return true;
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Y.x", Y.x);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Y.y", Y.y);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Y.z", Y.z);
+
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Z.x", Z.x);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Z.y", Z.y);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Z.z", Z.z);
+
+	float3 ref = App->renderer3D->activeCam->reference;
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Reference.x", ref.x);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Reference.y", ref.y);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Reference.z", ref.z);
+
+	float3 pos = App->scene->cameraObj->transform->getPosition();
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Position.x", pos.x);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Position.y", pos.y);
+	json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Position.z", pos.z);
+
+	return true;
 }
 
-bool ModuleCamera3D::LoadConfig(JsonParser& json) {
-    LoadVectorFromJson(json, "ForwardVector", X);
-    LoadVectorFromJson(json, "UpVector", Y);
-    LoadVectorFromJson(json, "RightVector", Z);
-    LoadVectorFromJson(json, "CameraPosition", Position);
-    LoadVectorFromJson(json, "TargetPosition", Reference);
+bool ModuleCamera3D::LoadConfig(JsonParser& json)
+{
 
-    LookAt(Reference);
+	X.x = json.JsonValToNumber("X.x");
+	X.y = json.JsonValToNumber("X.y");
+	X.z = json.JsonValToNumber("X.z");
 
-    return true;
+	Y.x = json.JsonValToNumber("Y.x");
+	Y.y = json.JsonValToNumber("Y.y");
+	Y.z = json.JsonValToNumber("Y.z");
+
+	Z.x = json.JsonValToNumber("Z.x");
+	Z.y = json.JsonValToNumber("Z.y");
+	Z.z = json.JsonValToNumber("Z.z");
+
+	Position.x = json.JsonValToNumber("Position.x");
+	Position.y = json.JsonValToNumber("Position.y");
+	Position.z = json.JsonValToNumber("Position.z");
+	App->scene->cameraObj->transform->setPosition(Position);
+
+	App->renderer3D->activeCam->reference.x = json.JsonValToNumber("Reference.x");
+	App->renderer3D->activeCam->reference.y = json.JsonValToNumber("Reference.y");
+	App->renderer3D->activeCam->reference.z = json.JsonValToNumber("Reference.z");
+	App->renderer3D->activeCam->LookAt(App->renderer3D->activeCam->reference);
+	
+	return true;
 }
+//bool ModuleCamera3D::SaveConfig(JsonParser& json) {
+//    SaveVectorToJson(json, "ForwardVector", X);
+//    SaveVectorToJson(json, "UpVector", Y);
+//    SaveVectorToJson(json, "RightVector", Z);
+//    SaveVectorToJson(json, "CameraPosition", Position);
+//    SaveVectorToJson(json, "TargetPosition", Reference);
+//
+//    return true;
+//}
+//
+//bool ModuleCamera3D::LoadConfig(JsonParser& json) {
+//    LoadVectorFromJson(json, "ForwardVector", X);
+//    LoadVectorFromJson(json, "UpVector", Y);
+//    LoadVectorFromJson(json, "RightVector", Z);
+//    LoadVectorFromJson(json, "CameraPosition", Position);
+//    LoadVectorFromJson(json, "TargetPosition", Reference);
+//
+//    LookAt(Reference);
+//
+//    return true;
+//}
 
 void ModuleCamera3D::SaveVectorToJson(JsonParser& json, const std::string& name, const float3& vector) {
     json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), (name + ".x").c_str(), vector.x);

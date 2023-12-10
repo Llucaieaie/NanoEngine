@@ -29,7 +29,7 @@ Application::Application()
 	AddModule(editor);
 
 	isSavingConfig = false;
-	isLoadingConfig = true;
+	isLoadingConfig = false;
 }
 
 Application::~Application()

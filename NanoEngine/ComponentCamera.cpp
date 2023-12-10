@@ -7,7 +7,7 @@
 
 ComponentCamera::ComponentCamera() :Component(nullptr)
 {
-
+	name = "Camera component";
 	type = ComponentType::CAMERA;
 	mOwner = nullptr;
 
@@ -58,7 +58,7 @@ void ComponentCamera::PrintInspector()
 void ComponentCamera::Update()
 {
 	if (mOwner == nullptr) return;
-
+	
 	frustum.pos = mOwner->transform->getPosition();
 	float4x4 m = mOwner->transform->getGlobalMatrix();
 	frustum.up = m.RotatePart().Col(1).Normalized();

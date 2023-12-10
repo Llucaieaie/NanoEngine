@@ -2,6 +2,7 @@
 
 ComponentMesh::ComponentMesh() : Component(nullptr)
 {
+	name = "Mesh component";
 	type = ComponentType::MESH;
 	mesh = nullptr;
 }

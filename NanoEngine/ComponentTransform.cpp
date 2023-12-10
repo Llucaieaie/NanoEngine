@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 ComponentTransform::ComponentTransform(GameObject* owner) : Component(owner) {
+	name = "Transform component";
 	type = ComponentType::TRANSFORM;
 	mOwner = owner;
 	resetMatrix();
