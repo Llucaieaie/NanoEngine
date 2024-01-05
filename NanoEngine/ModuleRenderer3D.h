@@ -64,7 +64,7 @@ public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	CPlane Grid;
+	PrimPlane Grid;
 	
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix;

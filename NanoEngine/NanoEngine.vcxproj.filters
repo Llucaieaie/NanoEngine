@@ -58,6 +58,9 @@
     <Filter Include="Externals\ImGui\backends">
       <UniqueIdentifier>{48ac5403-8e94-454c-9ba6-41896ab61194}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Physics">
+      <UniqueIdentifier>{fa021b83-cad6-4313-926c-bbc441c8af2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -342,6 +345,15 @@
     <ClInclude Include="ComponentCamera.h">
       <Filter>Sources\GameObject\Header</Filter>
     </ClInclude>
+    <ClInclude Include="ModulePhysics.h">
+      <Filter>Sources\Modules\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysBody3D.h">
+      <Filter>Sources\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysVehicle3D.h">
+      <Filter>Sources\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="log.cpp">
@@ -538,6 +550,15 @@
     </ClCompile>
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Sources\GameObject\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ModulePhysics.cpp">
+      <Filter>Sources\Modules\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysBody3D.cpp">
+      <Filter>Sources\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysVehicle3D.cpp">
+      <Filter>Sources\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
