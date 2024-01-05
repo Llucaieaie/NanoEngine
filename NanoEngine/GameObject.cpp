@@ -3,6 +3,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
+#include "ComponentPhysics.h"
 #include "OurPrimitive.h"
 
 
@@ -137,7 +138,18 @@ ComponentCamera* GameObject::GetComponentCamera()
 	return nullptr;
 }
 
+ComponentPhysics* GameObject::GetComponentPhysics()
+{
+	for (size_t i = 0; i < mComponents.size(); i++)
+	{
+		if (mComponents[i]->type == ComponentType::PHYSICS) {
 
+			return (ComponentPhysics*)mComponents[i];
+		}
+	}
+
+	return nullptr;
+}
 
 bool GameObject::CheckChildOf(GameObject* parent)
 {
@@ -195,7 +207,6 @@ bool GameObject::SetAsChildOf(GameObject* gameObject)
 void GameObject::PrintInspector()
 {
 
-
 	char* listComponenets[]{ "Add Component", "Mesh Component", "Texture Component" };
 	char aux[255] = { ' ' }; 
 
@@ -236,9 +247,5 @@ void GameObject::PrintInspector()
 
 		ImGui::Text("");
 		ImGui::SameLine(ImGui::GetWindowWidth() / 6);
-
-
 	}
-
-
 }
