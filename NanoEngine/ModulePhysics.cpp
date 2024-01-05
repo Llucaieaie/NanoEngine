@@ -364,6 +364,11 @@ void ModulePhysics::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, con
 	hinge->setDbgDrawSize(2.0f);
 }
 
+void ModulePhysics::RemoveBody(PhysBody3D* body)
+{
+	world->removeRigidBody(body->body);
+}
+
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
