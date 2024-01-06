@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ComponentPhysics.h"
@@ -241,11 +242,45 @@ void GameObject::PrintInspector()
 		}
 
 		ImGui::Separator();
-		ImGui::Text("");
-		ImGui::Text("");
-		ImGui::Text("");
 
-		ImGui::Text("");
-		ImGui::SameLine(ImGui::GetWindowWidth() / 6);
+		if (ImGui::Button("Add Component", ImVec2(ImGui::GetContentRegionAvail().x, 0))) {
+			ImGui::OpenPopup("AddComponentPopup");
+		}
+
+		if (ImGui::BeginPopup("AddComponentPopup")) {
+			if (ImGui::Selectable("Transform"))
+			{
+				if (App->hierarchy->objSelected->GetTransformComponent() == nullptr)
+				{
+					transform = new ComponentTransform(this);
+					App->hierarchy->objSelected->AddComponent(transform);
+				}
+			}
+			//if (ImGui::Selectable("Material"))
+			//{
+			//	if (App->hierarchy->objSelected->GetComponentTexture() == nullptr)
+			//	{
+			//		material = new ComponentMaterial(this);
+			//		App->hierarchy->objSelected->AddComponent(material);
+			//	}
+			//}
+			if (ImGui::Selectable("Camera"))
+			{
+				if (App->hierarchy->objSelected->GetComponentCamera() == nullptr)
+				{
+					camera = new ComponentCamera();
+					App->hierarchy->objSelected->AddComponent(camera);
+				}
+			}
+			if (ImGui::Selectable("Physics"))
+			{
+				if (App->hierarchy->objSelected->GetComponentPhysics() == nullptr)
+				{
+					physics = new ComponentPhysics(this);
+					App->hierarchy->objSelected->AddComponent(physics);
+				}
+			}
+			ImGui::EndPopup();
+		}
 	}
 }

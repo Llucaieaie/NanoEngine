@@ -38,7 +38,7 @@ struct Mesh {
     uint VBO;
     uint EBO;
 
-    bool showBB = true;
+    bool showBB = false;
 
     AABB Local_AABB;
     AABB Global_AABB;

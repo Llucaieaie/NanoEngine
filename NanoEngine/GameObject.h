@@ -44,6 +44,11 @@ public:
 	std::vector<Component*> mComponents;
 
 	ComponentTransform* transform;
+	ComponentMesh* mesh;
+	ComponentMaterial* material;
+	ComponentCamera* camera;
+	ComponentPhysics* physics;
+
 	GeometryType Stype;
 
 };
