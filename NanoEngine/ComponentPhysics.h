@@ -39,6 +39,8 @@ public:
 	bool isStatic;
 	PhysBody3D* collider;
 
+	ComponentTransform* transformComponent;
+
 	PrimCube cube;
 	PrimSphere sphere;
 	PrimCylinder cylinder;
