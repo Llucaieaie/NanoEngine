@@ -2,6 +2,7 @@
 #include "ImGui/imgui.h"
 #include "Primitive.h"
 #include "ModulePhysics.h"
+#include "ComponentTransform.h"
 
 #include "Module.h"
 
@@ -14,6 +15,8 @@ ComponentPhysics::ComponentPhysics(GameObject* owner) : Component(owner)
 
 	isStatic = false;
 	collider = nullptr;
+
+	scale = float3(1, 1, 1);
 }
 
 ComponentPhysics::~ComponentPhysics()
@@ -34,44 +37,84 @@ void ComponentPhysics::PrintInspector()
 
 		if (ImGui::Combo("Collider", reinterpret_cast<int*>(&shapeSelected), "Box\0Sphere\0Cylinder\0None"))
 
-		//	CheckShapes();
-
-		if (shapeSelected != ColliderShape::NONE) {
-			switch (shapeSelected)
-			{
-			case ComponentPhysics::ColliderShape::BOXSHAPE:
-			{
-				PrimCube cube;
-				collider = phys->AddBody(cube, 3.f);
-			}
-			break;
-			case ComponentPhysics::ColliderShape::SPHERESHAPE:
-			{
-				PrimSphere sphere;
-				collider = phys->AddBody(sphere, 3.f);
-			}
-			break;
-			case ComponentPhysics::ColliderShape::CYLINDERSHAPE:
-			{
-				PrimCylinder cylinder;
-				collider = phys->AddBody(cylinder, 3.f);
-			}
-			break;
-			default:
-				break;
-			}
-		}
-
-	//	if (ImGui::Button("Remove Collider"))
-	//	{
-	//		phys->RemoveBody(collider);
-	//		collider->~PhysBody3D();
-	//		collider = nullptr;
-	//	}
-	
-		if (ImGui::Button("Remove Component", ImVec2(140, 20)))
+			//	CheckShapes();
+		
+		switch (shapeSelected)
 		{
-
+		case ComponentPhysics::ColliderShape::BOXSHAPE:
+		{
+			if (collider == nullptr) {
+				DefaultBoxCollider();
+			}
+			else {
+				App->physics->RemoveBody(collider);
+				DefaultBoxCollider();
+			}
+			break;
 		}
+		case ComponentPhysics::ColliderShape::SPHERESHAPE:
+		{
+			if (collider == nullptr) {
+				DefaultSphereCollider();
+			}
+			else {
+				App->physics->RemoveBody(collider);
+				DefaultSphereCollider();
+			}
+		}
+		break;
+		case ComponentPhysics::ColliderShape::CYLINDERSHAPE:
+		{
+			if (collider == nullptr) {
+				collider = App->physics->AddBody(cylinder, 1);
+			}
+		}
+		break;
+		default:
+			break;
+		}
+
+		//if (shapeSelected == ColliderShape::BOXSHAPE) 
+		//{
+		//	
+		//	ImGui::Text("X\t\t Y\t\t Z");
+		//	if (ImGui::DragFloat3("Scale: ", scale.ptr()));
+		//	{
+		//		cube.size.x *= scale.x;
+		//		cube.size.y *= scale.y;
+		//		cube.size.z *= scale.z;
+		//	}
+		//	cube.Scale(scale.x, scale.y, scale.z); 
+		//}
+
+		if (ImGui::Button("Remove Collider"))
+		{
+			App->physics->RemoveBody(collider);
+			collider = nullptr;
+		}
+
 	}
 }
+
+void ComponentPhysics::DefaultBoxCollider()
+{
+	cube.size = (3, 3, 3);
+	ComponentTransform* transformComponent = App->hierarchy->objSelected->GetTransformComponent();
+	if (transformComponent) {
+		float3 pos = transformComponent->getPosition();
+		cube.SetPos(pos.x / 2, pos.y / 2 + 1, pos.z / 2);
+	}
+	collider = App->physics->AddBody(cube, 1);
+}
+
+void ComponentPhysics::DefaultSphereCollider()
+{
+	sphere.radius = 2;
+	ComponentTransform* transformComponent = App->hierarchy->objSelected->GetTransformComponent();
+	if (transformComponent) {
+		float3 pos = transformComponent->getPosition();
+		sphere.SetPos(pos.x / 2, pos.y / 2 + 1, pos.z / 2);
+	}
+	collider = App->physics->AddBody(sphere, 1);
+}
+

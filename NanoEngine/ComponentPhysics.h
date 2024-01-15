@@ -4,6 +4,8 @@
 #include "Application.h"
 #include "Globals.h"
 
+ComponentTransform;
+
 class ComponentPhysics : public Component
 {
 public:
@@ -26,6 +28,8 @@ public:
 
 	void PrintInspector();
 
+	void DefaultBoxCollider();
+	void DefaultSphereCollider();
 public:
 
 	ModulePhysics* phys;
@@ -35,4 +39,11 @@ public:
 	bool isStatic;
 	PhysBody3D* collider;
 
+	PrimCube cube;
+	PrimSphere sphere;
+	PrimCylinder cylinder;
+
+	float3 scale;
+
+	
 };

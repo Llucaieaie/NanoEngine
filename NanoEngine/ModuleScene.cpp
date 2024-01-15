@@ -5,6 +5,7 @@
 #include "ModuleAssimpMeshes.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentPhysics.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled) 
 {
@@ -28,6 +29,9 @@ bool ModuleScene::Start() {
 
     //Load Baker House
     bakerHouse = App->assimpMeshes->LoadMeshFromFile("Assets/Models/BakerHouse.fbx");
+    phys = new ComponentPhysics(bakerHouse);
+    bakerHouse->AddComponent(phys);
+
     return true;
 }
 

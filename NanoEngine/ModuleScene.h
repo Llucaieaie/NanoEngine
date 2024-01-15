@@ -4,6 +4,7 @@
 
 class GameObject;
 class ComponentCamera;
+class ComponentPhysics;
 
 class ModuleScene : public Module
 {
@@ -32,4 +33,5 @@ public:
 	GameObject* bakerHouse;
 	GameObject* cameraObj;
 	ComponentCamera* cam;
+	ComponentPhysics* phys;
 };
