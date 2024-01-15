@@ -31,7 +31,12 @@ public:
 	GameObject* prova6;
 
 	GameObject* bakerHouse;
+
 	GameObject* cameraObj;
 	ComponentCamera* cam;
+	ComponentPhysics* camCollider;
+
 	ComponentPhysics* phys;
+
+
 };

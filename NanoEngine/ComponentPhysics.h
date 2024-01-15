@@ -20,7 +20,7 @@ public:
 	ComponentPhysics(GameObject* owner);
 	virtual	~ComponentPhysics();
 
-	void Update() override;
+	void Update();
 
 	void Enable() { isActive = true; }
 	void Disable() { isActive = false; }
@@ -43,6 +43,7 @@ public:
 	PrimSphere sphere;
 	PrimCylinder cylinder;
 
+	float mass;
 	float3 scale;
 
 	

@@ -26,14 +26,27 @@ ComponentPhysics::~ComponentPhysics()
 
 void ComponentPhysics::Update()
 {
-
+	if (isStatic)
+		App->physics->SetBodyMass(collider, 0);
+	else
+		App->physics->SetBodyMass(collider, mass);
+	
 }
 
 void ComponentPhysics::PrintInspector()
 {
+	Update();
+
 	if (ImGui::CollapsingHeader("Physics"))
 	{
-		ImGui::Checkbox("Static", &isStatic);
+		ImGui::Checkbox("Static\t", &isStatic);
+
+		ImGui::SameLine();
+		ImGui::PushItemWidth(120.0f);
+		if (ImGui::InputFloat("Mass", &mass, 1.0f, 33))
+			App->physics->SetBodyMass(collider, mass);
+
+		ImGui::Text("\n");
 
 		if (ImGui::Combo("Collider", reinterpret_cast<int*>(&shapeSelected), "Box\0Sphere\0Cylinder\0None"))
 
@@ -99,22 +112,24 @@ void ComponentPhysics::PrintInspector()
 void ComponentPhysics::DefaultBoxCollider()
 {
 	cube.size = (3, 3, 3);
-	ComponentTransform* transformComponent = App->hierarchy->objSelected->GetTransformComponent();
+	transformComponent = App->hierarchy->objSelected->GetTransformComponent();
 	if (transformComponent) {
 		float3 pos = transformComponent->getPosition();
-		cube.SetPos(pos.x / 2, pos.y / 2 + 1, pos.z / 2);
+		cube.SetPos(pos.x / 2, pos.y / 2 + cube.size.y / 4, pos.z / 2);
 	}
 	collider = App->physics->AddBody(cube, 1);
+	mass = 1;
 }
 
 void ComponentPhysics::DefaultSphereCollider()
 {
 	sphere.radius = 2;
-	ComponentTransform* transformComponent = App->hierarchy->objSelected->GetTransformComponent();
+	transformComponent = App->hierarchy->objSelected->GetTransformComponent();
 	if (transformComponent) {
 		float3 pos = transformComponent->getPosition();
-		sphere.SetPos(pos.x / 2, pos.y / 2 + 1, pos.z / 2);
+		sphere.SetPos(pos.x / 2, pos.y / 2 + sphere.radius / 2, pos.z / 2);
 	}
 	collider = App->physics->AddBody(sphere, 1);
+	mass = 1;
 }
 

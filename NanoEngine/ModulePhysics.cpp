@@ -377,6 +377,20 @@ void ModulePhysics::RemoveBody(PhysBody3D* body)
 	world->removeRigidBody(body->body);
 }
 
+void ModulePhysics::SetBodyMass(PhysBody3D* pbody, float mass)
+{
+	if (pbody && pbody->body)
+	{
+		btCollisionShape* colShape = pbody->body->getCollisionShape();
+		btVector3 localInertia(0, 0, 0);
+
+		if (mass != 0.f)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		pbody->body->setMassProps(mass, localInertia);
+	}
+}
+
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {

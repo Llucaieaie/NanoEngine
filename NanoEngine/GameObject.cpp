@@ -7,7 +7,6 @@
 #include "ComponentPhysics.h"
 #include "OurPrimitive.h"
 
-
 GameObject::GameObject()
 {
 	name = "GameObject";
