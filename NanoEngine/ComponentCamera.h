@@ -18,6 +18,7 @@ public:
 	void Look(const float3& Position, const float3& Reference);
 	void LookAt(const float3& Spot);
 	void Move(const float3& Movement);
+	void RotationAroundCamera(float dx, float dy, float sensitivity);
 	void CreateFrameBuffer();
 	void SetActiveCam(ComponentCamera* cam);
 
@@ -36,6 +37,7 @@ public:
 
 	bool isActive;
 	bool isCulling;
+
 private:
 	float4x4 viewMatrix;
 	float4x4 projectionMatrix;

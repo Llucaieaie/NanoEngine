@@ -61,11 +61,33 @@ void ComponentCamera::PrintInspector()
 void ComponentCamera::Update()
 {
 	if (mOwner == nullptr) return;
+	if (App->GetState() == GameState::PLAYING) {
+		if (isActive) {
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) frustum.pos += frustum.front * 0.1f;
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) frustum.pos -= frustum.front * 0.1f;
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) frustum.pos -= frustum.WorldRight() * 0.1f;
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) frustum.pos += frustum.WorldRight() * 0.1f;
 
-	frustum.pos = mOwner->transform->getPosition();
-	float4x4 m = mOwner->transform->getGlobalMatrix();
-	frustum.up = m.RotatePart().Col(1).Normalized();
-	frustum.front = m.RotatePart().Col(2).Normalized();
+			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
+				RotationAroundCamera(1.0f, 0, 1.0f);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
+				RotationAroundCamera(-1.0f, 0, 1.0f);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
+				RotationAroundCamera(0, 1.0f, 1.0f);
+			}
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
+				RotationAroundCamera(0, -1.0f, 1.0f);
+			}
+		}
+	}
+	else {
+		frustum.pos = mOwner->transform->getPosition();
+		float4x4 m = mOwner->transform->getGlobalMatrix();
+		frustum.up = m.RotatePart().Col(1).Normalized();
+		frustum.front = m.RotatePart().Col(2).Normalized();
+	}
 
 	RenderCameraFrustum();
 }
@@ -89,6 +111,35 @@ void ComponentCamera::LookAt(const float3& Spot)
 void ComponentCamera::Move(const float3& Movement)
 {
 	frustum.pos += Movement;
+}
+
+void ComponentCamera::RotationAroundCamera(float dx, float dy, float sensitivity)
+{
+	//Rotation
+	Quat dir;
+	frustum.WorldMatrix().Decompose(float3(), dir, float3());
+
+	//Mouse look direction
+	if (dx != 0)
+	{
+		float DeltaX = (float)dx * sensitivity;
+		Quat X = Quat::identity;
+		X.SetFromAxisAngle(float3(0.0f, 1.0f, 0.0f), DeltaX * DEGTORAD);
+		dir = X * dir;
+	}
+
+	if (dy != 0)
+	{
+		float DeltaY = (float)dy * sensitivity;
+		Quat Y = Quat::identity;
+		Y.SetFromAxisAngle(float3(1.0f, 0.0f, 0.0f), DeltaY * DEGTORAD);
+		dir = dir * Y;
+	}
+
+	//Set direction
+	float4x4 rm = frustum.WorldMatrix();
+	rm.SetRotatePart(dir.Normalized());
+	frustum.SetWorldMatrix(rm.Float3x4Part());
 }
 
 void ComponentCamera::CreateFrameBuffer()
