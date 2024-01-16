@@ -166,3 +166,14 @@ void ComponentPhysics::DefaultSphereCollider()
 	mass = 1;
 }
 
+void ComponentPhysics::ProjectileCollider()
+{
+	sphere.radius = 1;
+	sphere.SetPos(App->scene->cam->frustum.pos.x / 2, App->scene->cam->frustum.pos.y / 2, App->scene->cam->frustum.pos.z / 2);
+	
+	mass = 1;
+	collider = App->physics->AddBody(sphere, 1);
+
+	float force = 30.0f;
+	collider->Push((App->scene->cam->frustum.front.x * force), (App->scene->cam->frustum.front.y * force), (App->scene->cam->frustum.front.z * force));
+}

@@ -5,6 +5,8 @@
 #include "PhysVehicle3D.h"
 #include "Primitive.h"
 #include "ModuleScene.h"
+#include "ComponentPhysics.h"
+#include "ComponentTransform.h"
 
 #ifdef _DEBUG
 #pragma comment (lib, "Bullet/libx86/BulletDynamics_debug.lib")
@@ -135,13 +137,30 @@ update_status ModulePhysics::Update(float dt)
 	if (App->GetState() == GameState::PLAYING) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 		{
-			PrimSphere s(1);
-			s.SetPos(App->camera->camera->frustum.pos.x / 2, App->camera->camera->frustum.pos.y / 2, App->camera->camera->frustum.pos.z / 2);
-			float force = 30.0f;
+			//PrimSphere s(1);
+			////s.SetPos(App->camera->camera->frustum.pos.x / 2, App->camera->camera->frustum.pos.y / 2, App->camera->camera->frustum.pos.z / 2);
+			//s.SetPos(App->scene->cam->frustum.pos.x / 2, App->scene->cam->frustum.pos.y / 2, App->scene->cam->frustum.pos.z / 2);
+			//s.radius = 1;
 
-			AddBody(s)->Push((App->camera->camera->frustum.front.x * force), (App->camera->camera->frustum.front.y * force), (App->camera->camera->frustum.front.z * force));
+			//float force = 30.0f;
+			//ballPhys->collider
+			//ball = App->assimpMeshes->LoadMeshFromFile("Assets/Models/icosphere.fbx");
+			//ballPhys = new ComponentPhysics(ball);
+			//ball->AddComponent(ballPhys);
+			//AddBody(s, 1)->Push((App->scene->cam->frustum.front.x * force), (App->scene->cam->frustum.front.y * force), (App->scene->cam->frustum.front.z * force));
+			ball = App->assimpMeshes->LoadMeshFromFile("Assets/Models/sphere.fbx");
+
+			balltrans = new ComponentTransform(ball);
+			ball->AddComponent(balltrans);
+
+			ballPhys = new ComponentPhysics(ball);
+			ball->AddComponent(ballPhys);
+			ballPhys->ProjectileCollider();
+			ballPhys->isStatic = false;
 		}
 	}
+	if(ballPhys!=nullptr)
+		ballPhys->Update();
 
 	return UPDATE_CONTINUE;
 }

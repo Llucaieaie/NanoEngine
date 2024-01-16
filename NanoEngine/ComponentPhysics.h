@@ -29,8 +29,8 @@ public:
 	void PrintInspector();
 
 	void DefaultBoxCollider();
-	
 	void DefaultSphereCollider();
+	void ProjectileCollider();
 public:
 
 	ModulePhysics* phys;

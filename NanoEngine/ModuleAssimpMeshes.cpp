@@ -376,17 +376,17 @@ void ModuleAssimpMeshes::RenderScene()
 
 void ModuleAssimpMeshes::RenderGame()
 {
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    //glMatrixMode(GL_PROJECTION);
-    //glLoadMatrixf(App->renderer3D->activeCam->GetProjetionMatrix());
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(App->renderer3D->activeCam->GetProjetionMatrix());
 
-    //glMatrixMode(GL_MODELVIEW);
-    //glLoadMatrixf(App->renderer3D->activeCam->GetViewMatrix());
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(App->renderer3D->activeCam->GetViewMatrix());
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->activeCam->frameBuffer);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->activeCam->frameBuffer);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     for (int i = 0; i < meshes.size(); i++) {
         if (App->renderer3D->activeCam->ObjectInsideFrustrum(meshes[i]))

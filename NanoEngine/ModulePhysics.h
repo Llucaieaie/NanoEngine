@@ -57,6 +57,11 @@ private:
 	std::vector <btTypedConstraint*> constraints;
 	std::vector <PhysVehicle3D*> vehicles;
 
+public:
+	GameObject* ball;
+	ComponentTransform* balltrans;
+	ComponentPhysics* ballPhys = nullptr;
+
 };
 
 class DebugDrawer : public btIDebugDraw

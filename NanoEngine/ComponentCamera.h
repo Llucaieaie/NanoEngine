@@ -12,7 +12,7 @@ public:
 	~ComponentCamera();
 
 	void PrintInspector();
-	void Update();
+	void Update() override;
 	void OnEditor();
 
 	void Look(const float3& Position, const float3& Reference);
