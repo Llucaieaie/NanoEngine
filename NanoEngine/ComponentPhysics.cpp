@@ -30,7 +30,11 @@ void ComponentPhysics::Update()
 		App->physics->SetBodyMass(collider, 0);
 	else
 		App->physics->SetBodyMass(collider, mass);
-	
+	if (collider != nullptr) {
+		float matrix[16];
+		collider->GetTransform(matrix);
+		mOwner->GetTransformComponent()->SetTransformFromMatrix(matrix);
+	}
 }
 
 void ComponentPhysics::PrintInspector()

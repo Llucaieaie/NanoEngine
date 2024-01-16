@@ -27,10 +27,11 @@ public:
 	void setScale(float3 sca);
 
 	void calculateMatrix();
+	void SetTransformFromMatrix(const float* matrix);
 
 	void PrintInspector();
 
-private:
+public:
 
 	float4x4 matrix;
 	float3 position;
