@@ -1,4 +1,4 @@
-# NanoEngine (Forked from SheeeshEngine)
+# NanoEngine
 
 Welcome to Nano Engine, a custom 3D engine designed for the 3D engine subject of the degree in Design and Development of Video Games in CITM. This ReadMe provides an overview of the engine's features and how to use them effectively.
 
@@ -39,6 +39,7 @@ Welcome to Nano Engine, a custom 3D engine designed for the 3D engine subject of
 	- Mouse Hold Left to orbit the game object selected.
 - Mouse wheel to zoom in and zoom out.
 - Holding SHIFT duplicates movement speed.
+- F1: toggle view physics world.
 
 #### Main Camera movement
 - Enter: shoot spheres
