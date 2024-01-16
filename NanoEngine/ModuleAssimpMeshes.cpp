@@ -353,7 +353,7 @@ void ModuleAssimpMeshes::RenderScene()
     for (int i = 0; i < meshes.size(); i++) {
         glColor3f(1.0f, 1.0f, 1.0f);
 
-        if (App->renderer3D->activeCam->ObjectInsideFrustrum(meshes[i]))
+        if (App->renderer3D->activeCam->ObjectInsideFrustrum(meshes[i]) || !App->renderer3D->activeCam->isCulling)
         {
             meshes[i]->OBB = meshes[i]->Local_AABB;
             meshes[i]->OBB.Transform(meshes[i]->owner->transform->getGlobalMatrix().Transposed());

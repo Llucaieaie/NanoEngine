@@ -23,6 +23,8 @@ ComponentCamera::ComponentCamera() :Component(nullptr)
 	frustum.pos = float3(0, 0, 0);
 
 	isActive = true;
+	isCulling = false;
+
 	SetActiveCam(this);
 
 	CreateFrameBuffer();
@@ -52,6 +54,7 @@ void ComponentCamera::PrintInspector()
 			frustum.farPlaneDistance = 100.f;
 			frustum.nearPlaneDistance = 0.1f;
 		}
+		ImGui::Checkbox("Frustum Culling", &isCulling);
 	}
 }
 

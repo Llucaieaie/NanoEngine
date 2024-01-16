@@ -35,6 +35,7 @@ public:
 	uint frameBuffer, cameraBuffer, renderBuffer;
 
 	bool isActive;
+	bool isCulling;
 private:
 	float4x4 viewMatrix;
 	float4x4 projectionMatrix;
