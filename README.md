@@ -26,6 +26,12 @@ Welcome to Nano Engine, a custom 3D engine designed for the 3D engine subject of
 - Frustum Culling
 - Mouse Picking
 - Scene/Game views
+
+### From v0.3
+- Physics active when Play is pressed
+- Added component physics
+- Colliders modifiable
+- Camera moves and shoots spheres
   
 ### Controls
 
@@ -43,6 +49,8 @@ Welcome to Nano Engine, a custom 3D engine designed for the 3D engine subject of
 
 #### Main Camera movement
 - Enter: shoot spheres
+- WASD: move forward, left, backward and right
+- Arrows: rotate camera
 
 ### Additional Comments
 Some parts of the system have been developed in collaboration with [Real Engine 5](https://github.com/Hacienda69/Real-Engine-5)
