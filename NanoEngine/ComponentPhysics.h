@@ -29,6 +29,7 @@ public:
 	void PrintInspector();
 
 	void DefaultBoxCollider();
+	
 	void DefaultSphereCollider();
 public:
 
@@ -46,7 +47,7 @@ public:
 	PrimCylinder cylinder;
 
 	float mass;
-	float3 scale;
-
+	float3 boxSize;
+	float sphereRadius;
 	
 };

@@ -16,7 +16,8 @@ ComponentPhysics::ComponentPhysics(GameObject* owner) : Component(owner)
 	isStatic = false;
 	collider = nullptr;
 
-	scale = float3(1, 1, 1);
+	boxSize = float3(3, 3, 3);
+	sphereRadius = 2.0f;
 }
 
 ComponentPhysics::~ComponentPhysics()
@@ -40,8 +41,6 @@ void ComponentPhysics::Update()
 
 void ComponentPhysics::PrintInspector()
 {
-	Update();
-
 	if (ImGui::CollapsingHeader("Physics"))
 	{
 		ImGui::Checkbox("Static\t", &isStatic);
@@ -104,6 +103,34 @@ void ComponentPhysics::PrintInspector()
 		//	}
 		//	cube.Scale(scale.x, scale.y, scale.z); 
 		//}
+		
+		switch (shapeSelected)
+		{
+		case ComponentPhysics::ColliderShape::BOXSHAPE:
+			ImGui::Text("X\t\t Y\t\t Z");
+			ImGui::PushItemWidth(200.0f);
+			if (ImGui::DragFloat3("Box Size ", boxSize.ptr()), 1.0f, 0.0f, 1000.0f)
+			{
+				cube.size.x = boxSize.x;
+				cube.size.y = boxSize.y;
+				cube.size.z = boxSize.z;
+				if (ImGui::Button("Update Collider")) {
+					App->physics->RemoveBody(collider);
+					collider = App->physics->AddBody(cube, mass);
+				}
+			}
+			break;
+		case ComponentPhysics::ColliderShape::SPHERESHAPE:
+			if (ImGui::DragFloat("Sphere Radius ", &sphereRadius), 1.0f, 0.0f, 1000.0f)
+			{
+				sphere.radius = sphereRadius;
+				if (ImGui::Button("Update Collider")) {
+					App->physics->RemoveBody(collider);
+					collider = App->physics->AddBody(sphere, mass);
+				}
+			}
+			break;
+		}
 
 		if (ImGui::Button("Remove Collider"))
 		{
@@ -112,6 +139,7 @@ void ComponentPhysics::PrintInspector()
 		}
 
 	}
+	Update();
 }
 
 void ComponentPhysics::DefaultBoxCollider()
@@ -120,7 +148,7 @@ void ComponentPhysics::DefaultBoxCollider()
 	transformComponent = App->hierarchy->objSelected->GetTransformComponent();
 	if (transformComponent) {
 		float3 pos = transformComponent->getPosition();
-		cube.SetPos(pos.x / 2, pos.y / 2 + cube.size.y / 4, pos.z / 2);
+		cube.SetPos(pos.x / 2, pos.y / 2 / 4, pos.z / 2);
 	}
 	collider = App->physics->AddBody(cube, 1);
 	mass = 1;
@@ -132,7 +160,7 @@ void ComponentPhysics::DefaultSphereCollider()
 	transformComponent = App->hierarchy->objSelected->GetTransformComponent();
 	if (transformComponent) {
 		float3 pos = transformComponent->getPosition();
-		sphere.SetPos(pos.x / 2, pos.y / 2 + sphere.radius / 2, pos.z / 2);
+		sphere.SetPos(pos.x / 2, pos.y / 2 / 2, pos.z / 2);
 	}
 	collider = App->physics->AddBody(sphere, 1);
 	mass = 1;
