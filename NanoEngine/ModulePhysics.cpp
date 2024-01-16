@@ -75,41 +75,42 @@ bool ModulePhysics::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	world->stepSimulation(dt, 15);
+	if (App->GetState() == GameState::PLAYING) {
+		world->stepSimulation(dt, 15);
 
-	int numManifolds = world->getDispatcher()->getNumManifolds();
-	for (int i = 0; i < numManifolds; i++)
-	{
-		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
-
-		int numContacts = contactManifold->getNumContacts();
-		if (numContacts > 0)
+		int numManifolds = world->getDispatcher()->getNumManifolds();
+		for (int i = 0; i < numManifolds; i++)
 		{
-			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
-			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
+			btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
+			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
-			App->scene->OnCollision(pbodyA, pbodyB);
-
-			/*if (pbodyA && pbodyB)
+			int numContacts = contactManifold->getNumContacts();
+			if (numContacts > 0)
 			{
-				vector<Module*>* item = pbodyA->collision_listeners[0];
-				while (item)
+				PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
+				PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
+
+				App->scene->OnCollision(pbodyA, pbodyB);
+
+				/*if (pbodyA && pbodyB)
 				{
-					item->data->OnCollision(pbodyA, pbodyB);
-					item = item.;
-				}
-				item = pbodyB->collision_listeners.getFirst();
-				while (item)
-				{
-					item->data->OnCollision(pbodyB, pbodyA);
-					item = item->next;
-				}
-			}*/
+					vector<Module*>* item = pbodyA->collision_listeners[0];
+					while (item)
+					{
+						item->data->OnCollision(pbodyA, pbodyB);
+						item = item.;
+					}
+					item = pbodyB->collision_listeners.getFirst();
+					while (item)
+					{
+						item->data->OnCollision(pbodyB, pbodyA);
+						item = item->next;
+					}
+				}*/
+			}
 		}
 	}
-
 	return UPDATE_CONTINUE;
 }
 
