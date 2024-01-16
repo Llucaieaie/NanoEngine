@@ -133,7 +133,7 @@ update_status ModulePhysics::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		PrimSphere s(1);
-		s.SetPos(App->camera->camera->frustum.pos.x, App->camera->camera->frustum.pos.y, App->camera->camera->frustum.pos.z);
+		s.SetPos(App->camera->camera->frustum.pos.x / 2, App->camera->camera->frustum.pos.y / 2, App->camera->camera->frustum.pos.z / 2);
 		float force = 30.0f;
 
 		AddBody(s)->Push((App->camera->camera->frustum.front.x * force), (App->camera->camera->frustum.front.y * force), (App->camera->camera->frustum.front.z * force));
